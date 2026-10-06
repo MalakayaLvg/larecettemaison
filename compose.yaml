@@ -1,0 +1,16 @@
+services:
+  db:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: larecette
+      POSTGRES_PASSWORD: larecette
+      POSTGRES_DB: larecette
+    # 5434 on the host: a native Postgres already uses 5432 and 5433 on this machine.
+    ports:
+      - "5434:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+volumes:
+  pgdata:
