@@ -73,6 +73,7 @@ export interface Config {
     testimonials: Testimonial;
     'quote-requests': QuoteRequest;
     'contact-messages': ContactMessage;
+    subscribers: Subscriber;
     media: Media;
     users: User;
     'payload-kv': PayloadKv;
@@ -88,6 +89,7 @@ export interface Config {
     testimonials: TestimonialsSelect<false> | TestimonialsSelect<true>;
     'quote-requests': QuoteRequestsSelect<false> | QuoteRequestsSelect<true>;
     'contact-messages': ContactMessagesSelect<false> | ContactMessagesSelect<true>;
+    subscribers: SubscribersSelect<false> | SubscribersSelect<true>;
     media: MediaSelect<false> | MediaSelect<true>;
     users: UsersSelect<false> | UsersSelect<true>;
     'payload-kv': PayloadKvSelect<false> | PayloadKvSelect<true>;
@@ -322,6 +324,22 @@ export interface ContactMessage {
   createdAt: string;
 }
 /**
+ * Inscrit·es à la newsletter. Seules les adresses « Confirmé·e » peuvent recevoir des envois.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "subscribers".
+ */
+export interface Subscriber {
+  id: number;
+  email: string;
+  status: 'en-attente' | 'confirme' | 'desinscrit';
+  confirmedAt?: string | null;
+  token?: string | null;
+  tokenExpiresAt?: string | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "users".
  */
@@ -394,6 +412,10 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'contact-messages';
         value: number | ContactMessage;
+      } | null)
+    | ({
+        relationTo: 'subscribers';
+        value: number | Subscriber;
       } | null)
     | ({
         relationTo: 'media';
@@ -542,6 +564,19 @@ export interface ContactMessagesSelect<T extends boolean = true> {
   email?: T;
   subject?: T;
   message?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "subscribers_select".
+ */
+export interface SubscribersSelect<T extends boolean = true> {
+  email?: T;
+  status?: T;
+  confirmedAt?: T;
+  token?: T;
+  tokenExpiresAt?: T;
   updatedAt?: T;
   createdAt?: T;
 }

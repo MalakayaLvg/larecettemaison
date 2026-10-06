@@ -12,6 +12,7 @@ import { Experiences } from "./collections/Experiences";
 import { Media } from "./collections/Media";
 import { QuoteRequests } from "./collections/QuoteRequests";
 import { StudioOffers } from "./collections/StudioOffers";
+import { Subscribers } from "./collections/Subscribers";
 import { Testimonials } from "./collections/Testimonials";
 import { Users } from "./collections/Users";
 
@@ -30,6 +31,7 @@ export default buildConfig({
     Testimonials,
     QuoteRequests,
     ContactMessages,
+    Subscribers,
     Media,
     Users,
   ],

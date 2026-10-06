@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { NewsletterForm } from "@/components/NewsletterForm";
 import { legalNav, mainNav, siteName } from "@/lib/site";
 
 export function Footer() {
@@ -22,8 +23,8 @@ export function Footer() {
             ))}
           </ul>
         </nav>
-        <div>
-          {/* Newsletter (Brevo) à brancher ici */}
+        <div className="space-y-6">
+          <NewsletterForm />
           <ul className="space-y-1 text-sm">
             {legalNav.map((item) => (
               <li key={item.href}>
