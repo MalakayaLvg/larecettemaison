@@ -30,6 +30,10 @@ export const quoteFields = [
 
 export type QuoteField = (typeof quoteFields)[number];
 
+export const contactFields = ["name", "email", "subject", "message"] as const;
+
+export type ContactField = (typeof contactFields)[number];
+
 // Only the expected text fields: drops the honeypot, React's internal fields and anything else posted.
 export function pickFields<TField extends string>(formData: FormData, fields: readonly TField[]) {
   const values: Partial<Record<TField, string>> = {};
@@ -42,3 +46,14 @@ export function pickFields<TField extends string>(formData: FormData, fields: re
 
 // Name of the hidden field used to catch bots (real visitors never fill it).
 export const HONEYPOT_FIELD = "website";
+
+// First validation message of each field, from a Zod error's `issues`.
+export function fieldErrors<TField extends string>(
+  issues: readonly { path: readonly PropertyKey[]; message: string }[],
+) {
+  const errors: Partial<Record<TField, string>> = {};
+  for (const issue of issues) {
+    errors[issue.path[0] as TField] ??= issue.message;
+  }
+  return errors;
+}

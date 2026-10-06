@@ -4,6 +4,7 @@ import { z } from "zod";
 import { detailsHtml, escapeHtml, notifyEmail, sendEmailSafely } from "@/lib/emails";
 import {
   type FormState,
+  fieldErrors,
   HONEYPOT_FIELD,
   pickFields,
   type QuoteField,
@@ -50,12 +51,7 @@ export async function submitQuote(_: QuoteFormState, formData: FormData): Promis
   const values = pickFields(formData, quoteFields);
   const parsed = quoteSchema.safeParse(values);
   if (!parsed.success) {
-    const errors: Partial<Record<QuoteField, string>> = {};
-    for (const issue of parsed.error.issues) {
-      const field = issue.path[0] as QuoteField;
-      errors[field] ??= issue.message;
-    }
-    return { status: "error", errors, values };
+    return { status: "error", errors: fieldErrors<QuoteField>(parsed.error.issues), values };
   }
 
   // Resolve the selected service against the database rather than trusting the posted label.
