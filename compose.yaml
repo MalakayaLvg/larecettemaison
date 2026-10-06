@@ -12,5 +12,14 @@ services:
     volumes:
       - pgdata:/var/lib/postgresql/data
 
+  # Catches every email the site sends (SMTP on 1025) and shows them at http://localhost:8025.
+  # Nothing is delivered to real inboxes.
+  mail:
+    image: axllent/mailpit
+    restart: unless-stopped
+    ports:
+      - "1025:1025"
+      - "8025:8025"
+
 volumes:
   pgdata:

@@ -1,46 +1,73 @@
-import { desc, eq } from "drizzle-orm";
-import { db } from "@/db";
-import { episodes } from "@/db/schema";
+import { cache } from "react";
+import { getPayloadClient } from "@/lib/payload";
 
 export async function getSeasons(): Promise<number[]> {
-  const rows = await db
-    .selectDistinct({ season: episodes.season })
-    .from(episodes)
-    .orderBy(episodes.season);
-  return rows.map((row) => row.season);
+  const payload = await getPayloadClient();
+  const { docs } = await payload.find({
+    collection: "episodes",
+    select: { season: true },
+    pagination: false,
+  });
+  return [...new Set(docs.map((doc) => doc.season))].sort((a, b) => a - b);
 }
 
 // Only the fields needed by the episode cards.
 export async function getEpisodeList(season?: number) {
-  return db
-    .select({
-      slug: episodes.slug,
-      title: episodes.title,
-      season: episodes.season,
-      number: episodes.number,
-      publishedAt: episodes.publishedAt,
-      durationSeconds: episodes.durationSeconds,
-      imageUrl: episodes.imageUrl,
-    })
-    .from(episodes)
-    .where(season ? eq(episodes.season, season) : undefined)
-    .orderBy(desc(episodes.publishedAt));
+  const payload = await getPayloadClient();
+  const { docs } = await payload.find({
+    collection: "episodes",
+    where: season ? { season: { equals: season } } : undefined,
+    sort: "-publishedAt",
+    pagination: false,
+    select: {
+      slug: true,
+      title: true,
+      season: true,
+      number: true,
+      publishedAt: true,
+      durationSeconds: true,
+      imageUrl: true,
+    },
+  });
+  return docs;
 }
 
 export type EpisodeListItem = Awaited<ReturnType<typeof getEpisodeList>>[number];
+
+// Wrapped in cache() so generateMetadata and the page share a single query.
+export const getEpisode = cache(async (season: number, slug: string) => {
+  const payload = await getPayloadClient();
+  const { docs } = await payload.find({
+    collection: "episodes",
+    where: { season: { equals: season }, slug: { equals: slug } },
+    limit: 1,
+  });
+  return docs[0];
+});
+
+// "saison-2" -> 2, anything else -> null
+export function parseSeasonSegment(segment: string) {
+  const match = /^saison-(\d+)$/.exec(segment);
+  return match ? Number(match[1]) : null;
+}
 
 export function episodeHref(episode: { season: number; slug: string }) {
   return `/podcast/saison-${episode.season}/${episode.slug}`;
 }
 
 // 3198 -> "53 min", 4035 -> "1 h 07"
-export function formatDuration(seconds: number | null) {
+export function formatDuration(seconds: number | null | undefined) {
   if (!seconds) return null;
   const minutes = Math.round(seconds / 60);
   if (minutes < 60) return `${minutes} min`;
   return `${Math.floor(minutes / 60)} h ${String(minutes % 60).padStart(2, "0")}`;
 }
 
-export function formatDate(date: Date) {
-  return date.toLocaleDateString("fr-FR", { day: "numeric", month: "long", year: "numeric" });
+// Payload returns dates as ISO strings.
+export function formatDate(date: string) {
+  return new Date(date).toLocaleDateString("fr-FR", {
+    day: "numeric",
+    month: "long",
+    year: "numeric",
+  });
 }

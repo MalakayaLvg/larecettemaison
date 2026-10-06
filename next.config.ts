@@ -1,3 +1,4 @@
+import { withPayload } from "@payloadcms/next/withPayload";
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
@@ -5,7 +6,9 @@ const nextConfig: NextConfig = {
     // Episode covers come from the Ausha RSS feed. Their URLs carry a ?t= cache-buster,
     // so `search` is left out (the `new URL()` form would require an empty query).
     remotePatterns: [{ protocol: "https", hostname: "image.ausha.co" }],
+    // Images uploaded in the Payload admin.
+    localPatterns: [{ pathname: "/api/media/file/**" }],
   },
 };
 
-export default nextConfig;
+export default withPayload(nextConfig, { devBundleServerPackages: false });

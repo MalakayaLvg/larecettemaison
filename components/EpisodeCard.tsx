@@ -32,7 +32,7 @@ export function EpisodeCard({ episode }: { episode: EpisodeListItem }) {
         {episode.title}
       </h2>
       <p className="text-sm opacity-60">
-        <time dateTime={episode.publishedAt.toISOString()}>
+        <time dateTime={episode.publishedAt}>
           {formatDate(episode.publishedAt)}
         </time>
       </p>

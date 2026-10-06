@@ -1,20 +1,25 @@
-import { drizzle } from "drizzle-orm/postgres-js";
-import postgres from "postgres";
+import { getPayload } from "payload";
 import { syncPodcastEpisodes } from "@/lib/podcast-sync";
 
 process.loadEnvFile(".env.local");
 
 async function main() {
-  const client = postgres(process.env.DATABASE_URL!);
+  // Imported after the env file is loaded: the config reads DATABASE_URL when evaluated.
+  const { default: config } = await import("../payload.config");
+  const payload = await getPayload({ config });
   try {
-    const result = await syncPodcastEpisodes(drizzle(client, { casing: "snake_case" }));
+    const result = await syncPodcastEpisodes(payload);
     console.log(`${result.inFeed} épisodes dans le flux, ${result.created} nouveaux en base.`);
   } finally {
-    await client.end();
+    await payload.destroy();
   }
 }
 
-main().catch((error) => {
-  console.error(error);
-  process.exit(1);
-});
+// Payload keeps handles open even after destroy(), so exit explicitly.
+main().then(
+  () => process.exit(0),
+  (error) => {
+    console.error(error);
+    process.exit(1);
+  },
+);

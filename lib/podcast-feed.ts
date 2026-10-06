@@ -1,4 +1,5 @@
 import { XMLParser } from "fast-xml-parser";
+import { slugify } from "@/lib/slugify";
 
 export const PODCAST_FEED_URL = "https://feed.ausha.co/Zg75JI109Rlm";
 
@@ -102,17 +103,6 @@ function parseDuration(value: string | number | undefined): number | null {
     .reduce((total, part) => total * 60 + Number(part), 0);
 }
 
-export function slugify(text: string): string {
-  return text
-    .normalize("NFD")
-    .replace(/[̀-ͯ]/g, "")
-    .toLowerCase()
-    .replace(/&amp;/g, "et")
-    .replace(/[^a-z0-9]+/g, "-")
-    .replace(/^-+|-+$/g, "")
-    .slice(0, 80)
-    .replace(/-+$/, "");
-}
 
 function withUniqueSlugs(episodes: FeedEpisode[]): FeedEpisode[] {
   const seen = new Map<string, number>();
