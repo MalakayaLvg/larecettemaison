@@ -1,18 +1,15 @@
 import Image from "next/image";
 import Link from "next/link";
-import {
-  type EpisodeListItem,
-  episodeHref,
-  formatDate,
-  formatDuration,
-} from "@/lib/episodes";
+import { cardClassName } from "@/components/home/Section";
+import { type EpisodeListItem, episodeHref, formatDuration } from "@/lib/episodes";
 
 export function EpisodeCard({ episode }: { episode: EpisodeListItem }) {
   const duration = formatDuration(episode.durationSeconds);
 
   return (
-    <Link href={episodeHref(episode)} className="group flex flex-col gap-3">
-      <div className="relative aspect-square overflow-hidden rounded-lg bg-black/5">
+    <Link href={episodeHref(episode)} className={`${cardClassName} group h-full`}>
+      {/* Square: the Ausha covers carry the guest's name, cropping them would cut it. */}
+      <div className="relative aspect-square overflow-hidden bg-foreground/10">
         {episode.imageUrl && (
           <Image
             src={episode.imageUrl}
@@ -23,19 +20,16 @@ export function EpisodeCard({ episode }: { episode: EpisodeListItem }) {
           />
         )}
       </div>
-      <p className="text-xs uppercase tracking-wide opacity-60">
-        Saison {episode.season}
-        {episode.number && ` · Épisode ${episode.number}`}
-        {duration && ` · ${duration}`}
-      </p>
-      <h2 className="font-semibold leading-snug group-hover:underline">
-        {episode.title}
-      </h2>
-      <p className="text-sm opacity-60">
-        <time dateTime={episode.publishedAt}>
-          {formatDate(episode.publishedAt)}
-        </time>
-      </p>
+      <div className="flex flex-1 flex-col gap-3 px-6 pt-3 pb-6">
+        <h3 className="text-xl font-black leading-snug group-hover:underline">{episode.title}</h3>
+        <p className="font-medium opacity-70">
+          Saison {episode.season}
+          {duration && ` · ${duration}`} ·{" "}
+          <time dateTime={episode.publishedAt}>
+            {new Date(episode.publishedAt).toLocaleDateString("fr-FR")}
+          </time>
+        </p>
+      </div>
     </Link>
   );
 }

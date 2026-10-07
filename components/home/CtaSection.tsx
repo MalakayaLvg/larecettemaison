@@ -9,8 +9,10 @@ export function CtaSection({
   primary = { href: "/devis", label: "Demander un devis" },
   secondary,
   muted = false,
+  eyebrow,
 }: {
   muted?: boolean;
+  eyebrow?: string;
   title: string;
   text?: string;
   primary?: Action;
@@ -20,6 +22,7 @@ export function CtaSection({
     <Section muted={muted}>
       <div className="mx-auto max-w-3xl space-y-8 text-center">
         <div className="space-y-4">
+          {eyebrow && <p className="font-medium opacity-70">{eyebrow}</p>}
           <h2 className="text-3xl font-black tracking-tight sm:text-[44px] sm:leading-[52px]">{title}</h2>
           {text && <p className="text-lg opacity-80">{text}</p>}
         </div>

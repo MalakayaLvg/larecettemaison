@@ -53,3 +53,19 @@ export const experienceFormats: {
     cta: "Voir les immersions",
   },
 ];
+
+// Listener reviews from the podcast platforms (not client testimonials, which live in Payload).
+export const listenerReviews = [
+  {
+    text: "Super podcast qui nous donne à entendre des personnes inspirantes qui trouvent des solutions. Les interviews sont bien menées. Bravo et bonne continuation.",
+    author: "CKterine",
+  },
+  {
+    text: "Super podcast toujours très informatif avec des invités intéressants. Inspirant ! Continuez comme ça",
+    author: "Épicerie Meloco",
+  },
+  {
+    text: "J'adore ce podcast qui donne envie d'avoir faim de bonnes choses… utile, durable et bon",
+    author: "Marie-Adeline",
+  },
+];

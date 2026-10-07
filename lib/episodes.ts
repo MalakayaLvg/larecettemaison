@@ -11,14 +11,14 @@ export async function getSeasons(): Promise<number[]> {
   return [...new Set(docs.map((doc) => doc.season))].sort((a, b) => a - b);
 }
 
-// Only the fields needed by the episode cards.
-export async function getEpisodeList(season?: number) {
+// Only the fields needed by the episode cards. `hasMore` drives the "Voir plus" link.
+export async function getEpisodeList(season?: number, limit = 9) {
   const payload = await getPayloadClient();
-  const { docs } = await payload.find({
+  const { docs, hasNextPage } = await payload.find({
     collection: "episodes",
     where: season ? { season: { equals: season } } : undefined,
     sort: "-publishedAt",
-    pagination: false,
+    limit,
     select: {
       slug: true,
       title: true,
@@ -29,10 +29,10 @@ export async function getEpisodeList(season?: number) {
       imageUrl: true,
     },
   });
-  return docs;
+  return { episodes: docs, hasMore: hasNextPage };
 }
 
-export type EpisodeListItem = Awaited<ReturnType<typeof getEpisodeList>>[number];
+export type EpisodeListItem = Awaited<ReturnType<typeof getEpisodeList>>["episodes"][number];
 
 // Home page: episodes marked "À la une" in the admin first, then the most recent ones.
 export async function getHomeEpisodes(limit = 3) {
