@@ -8,6 +8,7 @@ import {
   Section,
   StatCard,
 } from "@/components/home/Section";
+import { Steps } from "@/components/home/Steps";
 import { podcastStats } from "@/lib/content";
 import { getQuoteServices } from "@/lib/quote-services";
 import { getStudioOffers } from "@/lib/studio";
@@ -100,14 +101,7 @@ export default async function StudioPage(props: PageProps<"/studio">) {
 
       {/* 05 — Process */}
       <Section muted title="De l'idée à la diffusion : la production de votre podcast">
-        <ol className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-          {steps.map((step, index) => (
-            <li key={step} className="space-y-3 border-t border-black/15 pt-6">
-              <p className="text-lg font-medium opacity-70">{twoDigits(index)}</p>
-              <p className="text-2xl font-black">{step}</p>
-            </li>
-          ))}
-        </ol>
+        <Steps items={steps.map((title) => ({ title }))} />
       </Section>
 
       {/* 06 — Réalisations */}

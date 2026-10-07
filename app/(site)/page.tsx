@@ -9,19 +9,13 @@ import {
   StatCard,
 } from "@/components/home/Section";
 import { TestimonialsSection } from "@/components/home/TestimonialsSection";
-import { podcastStats } from "@/lib/content";
+import { missionStats, podcastStats } from "@/lib/content";
 import { episodeHref, formatDuration, getHomeEpisodes } from "@/lib/episodes";
 import { experienceHref, getHomeExperiences } from "@/lib/experiences";
 import { experienceTypes, type ExperienceType } from "@/lib/site";
 
 // Layout and copy from the Figma wireframe "Accueil" (node 80:529). Images are lo-fi
 // placeholders until the photos are provided.
-
-const missionStats = [
-  { value: "Un quart", label: "de notre empreinte carbone est lié à notre alimentation" },
-  { value: "20 tonnes", label: "de nourriture jetée chaque minute en France." },
-  { value: "1 Français/3", label: "souffre de maladies chroniques directement liées à son alimentation." },
-];
 
 const experienceFormats: {
   type: ExperienceType;
