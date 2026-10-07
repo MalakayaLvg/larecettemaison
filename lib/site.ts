@@ -15,10 +15,27 @@ export const legalNav = [
   { href: "/cgv", label: "CGV" },
 ] as const;
 
+// `eyebrow` and `others` adapt the experience page's wording (written for workshops in the
+// wireframe) to each type.
 export const experienceTypes = {
-  ateliers: { label: "Ateliers", duration: "2 h" },
-  "food-tours": { label: "Food tours", duration: "3 h" },
-  immersions: { label: "Immersions", duration: "1 journée" },
+  ateliers: {
+    label: "Ateliers",
+    duration: "2 h",
+    eyebrow: "Nos ateliers culinaires",
+    others: "Nos autres ateliers de cuisine à Lyon",
+  },
+  "food-tours": {
+    label: "Food tours",
+    duration: "3 h",
+    eyebrow: "Nos food tours",
+    others: "Nos autres food tours à Lyon",
+  },
+  immersions: {
+    label: "Immersions",
+    duration: "1 journée",
+    eyebrow: "Nos immersions",
+    others: "Nos autres immersions",
+  },
 } as const;
 
 export type ExperienceType = keyof typeof experienceTypes;

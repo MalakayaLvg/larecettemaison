@@ -30,6 +30,20 @@ export async function getHomeExperiences(limit = 3) {
   return docs;
 }
 
+// "Nos autres ateliers…" at the bottom of an experience page: same type, current one excluded.
+export async function getOtherExperiences(type: ExperienceType, excludeSlug: string, limit = 2) {
+  const payload = await getPayloadClient();
+  const { docs } = await payload.find({
+    collection: "experiences",
+    where: { and: [{ type: { equals: type } }, { slug: { not_equals: excludeSlug } }] },
+    sort: "-updatedAt",
+    limit,
+    depth: 1,
+    select: { slug: true, type: true, title: true, duration: true, excerpt: true, images: true },
+  });
+  return docs;
+}
+
 export type ExperienceListItem = Awaited<ReturnType<typeof getExperiencesByType>>[number];
 
 // Wrapped in cache() so generateMetadata and the page share a single query.

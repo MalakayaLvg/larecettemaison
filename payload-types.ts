@@ -285,6 +285,12 @@ export interface Experience {
   title: string;
   type: 'ateliers' | 'food-tours' | 'immersions';
   duration?: string | null;
+  location?: string | null;
+  price?: string | null;
+  /**
+   * Affiché dans le bloc de réservation, sous « Où et quand ? ».
+   */
+  availability?: string | null;
   /**
    * Courte présentation affichée sur les cartes.
    */
@@ -304,7 +310,31 @@ export interface Experience {
     };
     [k: string]: unknown;
   } | null;
+  /**
+   * La première illustre le bloc de réservation, les suivantes forment la galerie.
+   */
   images?: (number | Media)[] | null;
+  /**
+   * Seules les infos remplies sont affichées.
+   */
+  practical?: {
+    address?: string | null;
+    groupSize?: string | null;
+    diets?: string | null;
+    accessibility?: string | null;
+    cancellation?: string | null;
+  };
+  program?:
+    | {
+        text: string;
+        id?: string | null;
+      }[]
+    | null;
+  host?: {
+    heading?: string | null;
+    bio?: string | null;
+    photo?: (number | null) | Media;
+  };
   /**
    * Adresse de l'événement sur Luma (https://lu.ma/…). Laisser vide si pas de réservation en ligne.
    */
@@ -599,9 +629,34 @@ export interface ExperiencesSelect<T extends boolean = true> {
   title?: T;
   type?: T;
   duration?: T;
+  location?: T;
+  price?: T;
+  availability?: T;
   excerpt?: T;
   description?: T;
   images?: T;
+  practical?:
+    | T
+    | {
+        address?: T;
+        groupSize?: T;
+        diets?: T;
+        accessibility?: T;
+        cancellation?: T;
+      };
+  program?:
+    | T
+    | {
+        text?: T;
+        id?: T;
+      };
+  host?:
+    | T
+    | {
+        heading?: T;
+        bio?: T;
+        photo?: T;
+      };
   lumaUrl?: T;
   lumaEventId?: T;
   onQuote?: T;
