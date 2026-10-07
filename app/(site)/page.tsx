@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { CtaSection } from "@/components/home/CtaSection";
+import { FormatCard } from "@/components/home/FormatCard";
 import { Placeholder } from "@/components/home/Placeholder";
 import {
   buttonClassName,
@@ -9,46 +10,15 @@ import {
   StatCard,
 } from "@/components/home/Section";
 import { TestimonialsSection } from "@/components/home/TestimonialsSection";
-import { missionStats, podcastStats } from "@/lib/content";
+import { UpcomingSessions } from "@/components/home/UpcomingSessions";
+import { experienceFormats, missionStats, podcastStats } from "@/lib/content";
 import { episodeHref, formatDuration, getHomeEpisodes } from "@/lib/episodes";
-import { experienceHref, getHomeExperiences } from "@/lib/experiences";
-import { experienceTypes, type ExperienceType } from "@/lib/site";
 
 // Layout and copy from the Figma wireframe "Accueil" (node 80:529). Images are lo-fi
 // placeholders until the photos are provided.
 
-const experienceFormats: {
-  type: ExperienceType;
-  title: string;
-  image: string;
-  text: string;
-  price: string;
-}[] = [
-  {
-    type: "ateliers",
-    title: "Ateliers (2 h)",
-    image: "Image — Atelier lactofermentation",
-    text: "Vivez un atelier collectif et favorisez la cohésion d'équipe. Découvrez, cuisinez et apprenez ensemble aux côtés d'artisan·es et chef·fes engagé·es. Repartez avec des conseils et des recettes !",
-    price: "70 € par personne",
-  },
-  {
-    type: "food-tours",
-    title: "Food tours (3 h)",
-    image: "Image — Balade gustative à la Croix-Rousse",
-    text: "Embarquez pour une balade gustative à la rencontre de celles et ceux qui façonnent l'alimentation de demain. Rencontrez des passionné·es et explorez les coulisses de nos assiettes : visites, ateliers, dégustations...",
-    price: "À partir de 60 € par personne",
-  },
-  {
-    type: "immersions",
-    title: "Immersions (journées)",
-    image: "Image — Immersion à la ferme",
-    text: "Partagez le quotidien et le savoir-faire de producteur·trices locaux. Semez, plantez, récoltez, vinifiez, fabriquez, au rythme des saisons. Tissez des liens et créez des souvenirs marquants.",
-    price: "Tarif sur devis pour les entreprises.",
-  },
-];
-
 export default async function HomePage() {
-  const [episodes, experiences] = await Promise.all([getHomeEpisodes(3), getHomeExperiences(3)]);
+  const episodes = await getHomeEpisodes(3);
 
   return (
     <>
@@ -117,14 +87,7 @@ export default async function HomePage() {
       <Section muted eyebrow="Les expériences" title="Des expériences clés en main et sur mesure">
         <div className="grid gap-6 md:grid-cols-3">
           {experienceFormats.map((format) => (
-            <Link key={format.type} href={`/experiences/${format.type}`} className={`${cardClassName} group`}>
-              <Placeholder label={format.image} className="h-64 lg:h-80" />
-              <div className="flex flex-1 flex-col gap-3 px-6 pt-3 pb-6">
-                <h3 className="text-2xl font-black group-hover:underline">{format.title}</h3>
-                <p className="flex-1 opacity-80">{format.text}</p>
-                <p className="text-lg font-bold">{format.price}</p>
-              </div>
-            </Link>
+            <FormatCard key={format.type} format={format} title={format.title} />
           ))}
         </div>
         <div className="mt-12">
@@ -135,26 +98,7 @@ export default async function HomePage() {
       </Section>
 
       {/* 06 — Prochaines sessions */}
-      {experiences.length > 0 && (
-        <Section title="Prochaines sessions à Lyon">
-          <ul className="grid gap-6 md:grid-cols-3">
-            {experiences.map((experience) => (
-              <li key={experience.slug} className="space-y-3 border-t border-black/15 pt-6">
-                <p className="text-lg font-medium opacity-70">
-                  {experience.title} · {experienceTypes[experience.type].label}
-                  {experience.duration && ` · ${experience.duration}`}
-                </p>
-                <Link href={experienceHref(experience)} className="inline-block opacity-80 hover:underline">
-                  {experience.lumaUrl ? "Réserver en ligne" : "Voir l'expérience"} →
-                </Link>
-              </li>
-            ))}
-          </ul>
-          <Link href="/experiences" className={`${ghostButtonClassName} mt-12`}>
-            Voir toutes les dates
-          </Link>
-        </Section>
-      )}
+      <UpcomingSessions allDatesHref="/experiences" />
 
       {/* 07 — Podcast à la une */}
       <Section muted>

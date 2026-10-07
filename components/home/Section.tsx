@@ -1,13 +1,15 @@
 // Home page section: full-width band (white or grey, alternating in the wireframe) with an
-// optional eyebrow and title above the content.
+// optional eyebrow, title and intro text above the content.
 export function Section({
   eyebrow,
   title,
+  intro,
   muted = false,
   children,
 }: {
   eyebrow?: string;
   title?: string;
+  intro?: string;
   muted?: boolean;
   children: React.ReactNode;
 }) {
@@ -20,6 +22,7 @@ export function Section({
             {title && (
               <h2 className="text-3xl font-black tracking-tight sm:text-[44px] sm:leading-[52px]">{title}</h2>
             )}
+            {intro && <p className="text-lg opacity-80">{intro}</p>}
           </div>
         )}
         {children}

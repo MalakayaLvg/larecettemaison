@@ -8,14 +8,16 @@ export function CtaSection({
   text,
   primary = { href: "/devis", label: "Demander un devis" },
   secondary,
+  muted = false,
 }: {
+  muted?: boolean;
   title: string;
   text?: string;
   primary?: Action;
   secondary?: Action;
 }) {
   return (
-    <Section>
+    <Section muted={muted}>
       <div className="mx-auto max-w-3xl space-y-8 text-center">
         <div className="space-y-4">
           <h2 className="text-3xl font-black tracking-tight sm:text-[44px] sm:leading-[52px]">{title}</h2>
