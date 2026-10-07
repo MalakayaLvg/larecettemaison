@@ -68,6 +68,7 @@ export interface Config {
   blocks: {};
   collections: {
     episodes: Episode;
+    articles: Article;
     experiences: Experience;
     'studio-offers': StudioOffer;
     testimonials: Testimonial;
@@ -84,6 +85,7 @@ export interface Config {
   collectionsJoins: {};
   collectionsSelect: {
     episodes: EpisodesSelect<false> | EpisodesSelect<true>;
+    articles: ArticlesSelect<false> | ArticlesSelect<true>;
     experiences: ExperiencesSelect<false> | ExperiencesSelect<true>;
     'studio-offers': StudioOffersSelect<false> | StudioOffersSelect<true>;
     testimonials: TestimonialsSelect<false> | TestimonialsSelect<true>;
@@ -232,6 +234,47 @@ export interface Media {
   height?: number | null;
   focalX?: number | null;
   focalY?: number | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "articles".
+ */
+export interface Article {
+  id: number;
+  title: string;
+  /**
+   * Deux ou trois phrases, affichées sur la liste des articles et pour Google.
+   */
+  excerpt: string;
+  cover?: (number | null) | Media;
+  content: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  };
+  category: 'sante-alimentation' | 'peche-durable' | 'cuisine-vegetale' | 'anti-gaspi';
+  /**
+   * Si l'article est tiré d'un épisode du podcast : affiche « Extrait du podcast » et un lien vers l'épisode.
+   */
+  episode?: (number | null) | Episode;
+  publishedAt: string;
+  /**
+   * Partie de l'adresse de la page. Laisser vide pour la générer depuis le titre.
+   */
+  slug: string;
+  updatedAt: string;
+  createdAt: string;
+  _status?: ('draft' | 'published') | null;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -415,6 +458,10 @@ export interface PayloadLockedDocument {
         value: number | Episode;
       } | null)
     | ({
+        relationTo: 'articles';
+        value: number | Article;
+      } | null)
+    | ({
         relationTo: 'experiences';
         value: number | Experience;
       } | null)
@@ -526,6 +573,23 @@ export interface EpisodesSelect<T extends boolean = true> {
   slug?: T;
   updatedAt?: T;
   createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "articles_select".
+ */
+export interface ArticlesSelect<T extends boolean = true> {
+  title?: T;
+  excerpt?: T;
+  cover?: T;
+  content?: T;
+  category?: T;
+  episode?: T;
+  publishedAt?: T;
+  slug?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  _status?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema

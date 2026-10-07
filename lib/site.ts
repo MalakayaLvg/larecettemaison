@@ -34,3 +34,17 @@ export const podcastPlatforms = [
   { label: "Deezer", href: "https://www.deezer.com/show/5771417" },
   { label: "YouTube", href: "https://www.youtube.com/@Larecettepodcast" },
 ] as const;
+
+// Blog categories (from the Figma wireframe); values are used in /blog?categorie=…
+export const articleCategories = {
+  "sante-alimentation": "Santé et alimentation",
+  "peche-durable": "Pêche durable",
+  "cuisine-vegetale": "Cuisine végétale",
+  "anti-gaspi": "Anti-gaspi",
+} as const;
+
+export type ArticleCategory = keyof typeof articleCategories;
+
+export function isArticleCategory(value: unknown): value is ArticleCategory {
+  return typeof value === "string" && value in articleCategories;
+}

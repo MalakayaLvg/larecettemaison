@@ -7,6 +7,7 @@ import path from "path";
 import { buildConfig } from "payload";
 import sharp from "sharp";
 import { fileURLToPath } from "url";
+import { Articles } from "./collections/Articles";
 import { ContactMessages } from "./collections/ContactMessages";
 import { Episodes } from "./collections/Episodes";
 import { Experiences } from "./collections/Experiences";
@@ -28,6 +29,7 @@ export default buildConfig({
   },
   collections: [
     Episodes,
+    Articles,
     Experiences,
     StudioOffers,
     Testimonials,
