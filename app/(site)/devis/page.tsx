@@ -9,10 +9,10 @@ export const metadata: Metadata = {
 };
 
 export default async function QuotePage(props: PageProps<"/devis">) {
-  const { experience } = await props.searchParams;
+  const { experience, studio } = await props.searchParams;
   const services = await getQuoteServices();
-  // Coming from an experience page: preselect it, if it is still offered on quote.
-  const preselected = `experience:${experience}`;
+  // Coming from an experience or a Studio offer: preselect it, if it is still in the list.
+  const preselected = experience ? `experience:${experience}` : `studio:${studio}`;
   const defaultService = services.some((group) =>
     group.options.some((option) => option.value === preselected),
   )

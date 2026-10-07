@@ -17,9 +17,14 @@ const initialState: QuoteFormState = { status: "idle" };
 export function QuoteForm({
   services,
   defaultService,
+  groupFields = true,
+  submitLabel = "Envoyer la demande",
 }: {
   services: QuoteServiceGroup[];
   defaultService?: string;
+  // Participants and location only make sense for experiences (hidden on the Studio page).
+  groupFields?: boolean;
+  submitLabel?: string;
 }) {
   const [state, formAction, pending] = useActionState(submitQuote, initialState);
 
@@ -67,24 +72,28 @@ export function QuoteForm({
         <option value="autre">Autre / je ne sais pas encore</option>
       </SelectField>
 
-      <TextField name="participants" label="Nombre de participants" type="number" defaultValue={values.participants} error={errors.participants} />
+      {groupFields && (
+        <TextField name="participants" label="Nombre de participants" type="number" defaultValue={values.participants} error={errors.participants} />
+      )}
       <TextField name="desiredDate" label="Date souhaitée" hint="Une date précise ou une période." defaultValue={values.desiredDate} error={errors.desiredDate} />
 
-      <SelectField name="location" label="Lieu" defaultValue={values.location} error={errors.location}>
-        <option value="">Non précisé</option>
-        {quoteLocations.map((location) => (
-          <option key={location.value} value={location.value}>
-            {location.label}
-          </option>
-        ))}
-      </SelectField>
+      {groupFields && (
+        <SelectField name="location" label="Lieu" defaultValue={values.location} error={errors.location}>
+          <option value="">Non précisé</option>
+          {quoteLocations.map((location) => (
+            <option key={location.value} value={location.value}>
+              {location.label}
+            </option>
+          ))}
+        </SelectField>
+      )}
       <TextField name="budget" label="Budget" defaultValue={values.budget} error={errors.budget} />
 
       <TextAreaField name="message" label="Votre projet" className="sm:col-span-2" defaultValue={values.message} error={errors.message} />
 
       <HoneypotField />
       <div className="sm:col-span-2">
-        <SubmitButton pending={pending}>Envoyer la demande</SubmitButton>
+        <SubmitButton pending={pending}>{submitLabel}</SubmitButton>
       </div>
     </form>
   );

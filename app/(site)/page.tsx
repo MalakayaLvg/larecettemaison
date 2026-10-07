@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { CtaSection } from "@/components/home/CtaSection";
 import { Placeholder } from "@/components/home/Placeholder";
 import {
   buttonClassName,
@@ -7,10 +8,11 @@ import {
   Section,
   StatCard,
 } from "@/components/home/Section";
+import { TestimonialsSection } from "@/components/home/TestimonialsSection";
+import { podcastStats } from "@/lib/content";
 import { episodeHref, formatDuration, getHomeEpisodes } from "@/lib/episodes";
 import { experienceHref, getHomeExperiences } from "@/lib/experiences";
 import { experienceTypes, type ExperienceType } from "@/lib/site";
-import { getTestimonials } from "@/lib/testimonials";
 
 // Layout and copy from the Figma wireframe "Accueil" (node 80:529). Images are lo-fi
 // placeholders until the photos are provided.
@@ -19,13 +21,6 @@ const missionStats = [
   { value: "Un quart", label: "de notre empreinte carbone est lié à notre alimentation" },
   { value: "20 tonnes", label: "de nourriture jetée chaque minute en France." },
   { value: "1 Français/3", label: "souffre de maladies chroniques directement liées à son alimentation." },
-];
-
-const podcastStats = [
-  { value: "4,9/5", label: "sur les plateformes d'écoute (70 avis)" },
-  { value: "3 000", label: "auditeur·ices par mois" },
-  { value: "+ de 50 000", label: "écoutes, environ 2 500 par épisode" },
-  { value: "75 %", label: "Chaque épisode est écouté à 75 % en moyenne" },
 ];
 
 const experienceFormats: {
@@ -59,11 +54,7 @@ const experienceFormats: {
 ];
 
 export default async function HomePage() {
-  const [episodes, experiences, testimonials] = await Promise.all([
-    getHomeEpisodes(3),
-    getHomeExperiences(3),
-    getTestimonials(3),
-  ]);
+  const [episodes, experiences] = await Promise.all([getHomeEpisodes(3), getHomeExperiences(3)]);
 
   return (
     <>
@@ -222,40 +213,13 @@ export default async function HomePage() {
       </Section>
 
       {/* 09 — Avis */}
-      {testimonials.length > 0 && (
-        <Section muted title="Avis de nos client·es">
-          <ul className="grid gap-6 md:grid-cols-3">
-            {testimonials.map((testimonial) => (
-              <li key={testimonial.id} className={cardClassName}>
-                <figure className="space-y-3 p-6">
-                  <blockquote className="opacity-80">« {testimonial.text} »</blockquote>
-                  <figcaption className="font-medium opacity-70">
-                    {testimonial.author}
-                    {testimonial.role && `, ${testimonial.role}`}
-                  </figcaption>
-                </figure>
-              </li>
-            ))}
-          </ul>
-        </Section>
-      )}
+      <TestimonialsSection muted />
 
       {/* 10 — CTA final */}
-      <Section>
-        <div className="mx-auto max-w-3xl space-y-8 text-center">
-          <div className="space-y-4">
-            <h2 className="text-3xl font-black tracking-tight sm:text-[44px] sm:leading-[52px]">
-              Un team building écoresponsable pour vos équipes à Lyon
-            </h2>
-            <p className="text-lg opacity-80">
-              Pour tous vos évènements : teambuildings, séminaires, afterworks, déjeuners.
-            </p>
-          </div>
-          <Link href="/devis" className={buttonClassName}>
-            Demander un devis
-          </Link>
-        </div>
-      </Section>
+      <CtaSection
+        title="Un team building écoresponsable pour vos équipes à Lyon"
+        text="Pour tous vos évènements : teambuildings, séminaires, afterworks, déjeuners."
+      />
     </>
   );
 }
