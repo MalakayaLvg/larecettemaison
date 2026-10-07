@@ -65,3 +65,5 @@ export type ArticleCategory = keyof typeof articleCategories;
 export function isArticleCategory(value: unknown): value is ArticleCategory {
   return typeof value === "string" && value in articleCategories;
 }
+
+export const contactEmail = "larecette@ecomail.fr";

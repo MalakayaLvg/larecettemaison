@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
-import Link from "next/link";
-import { PageIntro } from "@/components/PageIntro";
+import { FormHero } from "@/components/home/FormHero";
 import { ContactForm } from "./ContactForm";
 
 export const metadata: Metadata = {
@@ -8,22 +7,17 @@ export const metadata: Metadata = {
   description: "Contacter Maison La Recette.",
 };
 
+// Same layout as the quote page (Figma "Contact / Devis"), with the plain message form.
 export default function ContactPage() {
   return (
-    <>
-      <PageIntro title="Contact">
-        <p>
-          Une question, une idée d&apos;invité·e pour le podcast, une envie de collaborer ?
-          Écrivez-nous. Pour une prestation (entreprise, groupe),{" "}
-          <Link href="/devis" className="underline">
-            demandez plutôt un devis
-          </Link>
-          .
-        </p>
-      </PageIntro>
-      <div className="mx-auto max-w-3xl px-4 pb-16">
-        <ContactForm />
-      </div>
-    </>
+    <FormHero
+      title="Contact"
+      intro="Une question, une idée d'invité·e pour le podcast, une envie de collaborer ? Écrivez-nous, nous vous répondons très vite."
+      otherLink={{ href: "/devis", label: "Pour une prestation (entreprise, groupe), demandez plutôt un devis" }}
+      cardTitle="Nous écrire"
+      note="* Champs obligatoires."
+    >
+      <ContactForm />
+    </FormHero>
   );
 }
