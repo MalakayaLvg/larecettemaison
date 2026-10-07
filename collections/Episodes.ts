@@ -44,10 +44,23 @@ export const Episodes: CollectionConfig = {
       },
     },
     {
-      type: "row",
+      type: "collapsible",
+      label: "Invité·e",
       fields: [
-        { name: "guestName", label: "Invité·e", type: "text" },
-        { name: "guestRole", label: "Rôle de l'invité·e", type: "text" },
+        {
+          type: "row",
+          fields: [
+            { name: "guestName", label: "Nom", type: "text" },
+            { name: "guestRole", label: "Rôle", type: "text", admin: { placeholder: "cueilleur d'algues" } },
+          ],
+        },
+        {
+          name: "guestBio",
+          label: "Présentation",
+          type: "textarea",
+          admin: { description: "Affiche la section « Qui est… ? » sur la page de l'épisode." },
+        },
+        { name: "guestPhoto", label: "Portrait", type: "upload", relationTo: "media" },
       ],
     },
     {
@@ -58,6 +71,30 @@ export const Episodes: CollectionConfig = {
         { name: "appleUrl", label: "Apple Podcasts", type: "text" },
         { name: "deezerUrl", label: "Deezer", type: "text" },
         { name: "youtubeUrl", label: "YouTube", type: "text" },
+      ],
+    },
+    {
+      name: "extracts",
+      label: "Extraits",
+      labels: { singular: "Extrait", plural: "Extraits" },
+      type: "array",
+      admin: {
+        readOnly: true,
+        initCollapsed: true,
+        description: "Importés du flux Ausha et rattachés automatiquement à l'épisode.",
+      },
+      fields: [
+        { name: "title", label: "Titre", type: "text", required: true },
+        {
+          type: "row",
+          fields: [
+            { name: "number", label: "Numéro", type: "number" },
+            { name: "durationSeconds", label: "Durée (secondes)", type: "number" },
+            { name: "publishedAt", label: "Date", type: "date", required: true },
+          ],
+        },
+        { name: "audioUrl", label: "Fichier audio", type: "text", required: true },
+        { name: "guid", type: "text", required: true },
       ],
     },
     {

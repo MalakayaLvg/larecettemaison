@@ -6,7 +6,8 @@ import { HoneypotField } from "@/components/forms/fields";
 
 const initialState: NewsletterFormState = { status: "idle" };
 
-export function NewsletterForm() {
+// `id` must be unique on the page: the form appears in the footer and on some pages.
+export function NewsletterForm({ id = "newsletter-email" }: { id?: string }) {
   const [state, formAction, pending] = useActionState(subscribeNewsletter, initialState);
 
   if (state.status === "success") {
@@ -20,12 +21,12 @@ export function NewsletterForm() {
   const error = state.status === "error" ? state.errors.email : undefined;
   return (
     <form action={formAction} noValidate className="relative">
-      <label htmlFor="newsletter-email" className="text-sm font-medium">
+      <label htmlFor={id} className="text-sm font-medium">
         Recevoir la newsletter
       </label>
       <div className="mt-2 flex gap-2">
         <input
-          id="newsletter-email"
+          id={id}
           name="email"
           type="email"
           required
@@ -33,7 +34,7 @@ export function NewsletterForm() {
           placeholder="votre@email.fr"
           defaultValue={state.status === "error" ? state.values.email : undefined}
           aria-invalid={error ? true : undefined}
-          aria-describedby={error ? "newsletter-email-error" : undefined}
+          aria-describedby={error ? `${id}-error` : undefined}
           className="min-w-0 flex-1 rounded-md border border-black/15 bg-transparent px-3 py-1.5 text-sm focus:border-foreground focus:outline-none aria-invalid:border-red-600"
         />
         <button
@@ -45,7 +46,7 @@ export function NewsletterForm() {
         </button>
       </div>
       {error && (
-        <p id="newsletter-email-error" className="mt-1 text-sm text-red-600">
+        <p id={`${id}-error`} className="mt-1 text-sm text-red-600">
           {error}
         </p>
       )}

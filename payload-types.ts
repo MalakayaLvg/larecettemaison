@@ -165,10 +165,29 @@ export interface Episode {
   summary?: string | null;
   guestName?: string | null;
   guestRole?: string | null;
+  /**
+   * Affiche la section « Qui est… ? » sur la page de l'épisode.
+   */
+  guestBio?: string | null;
+  guestPhoto?: (number | null) | Media;
   spotifyUrl?: string | null;
   appleUrl?: string | null;
   deezerUrl?: string | null;
   youtubeUrl?: string | null;
+  /**
+   * Importés du flux Ausha et rattachés automatiquement à l'épisode.
+   */
+  extracts?:
+    | {
+        title: string;
+        number?: number | null;
+        durationSeconds?: number | null;
+        publishedAt: string;
+        audioUrl: string;
+        guid: string;
+        id?: string | null;
+      }[]
+    | null;
   /**
    * Importé du flux Ausha.
    */
@@ -189,6 +208,30 @@ export interface Episode {
   slug: string;
   updatedAt: string;
   createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "media".
+ */
+export interface Media {
+  id: number;
+  /**
+   * Décrit l'image pour les personnes malvoyantes et Google.
+   */
+  alt: string;
+  prefix?: string | null;
+  _objectKey?: string | null;
+  updatedAt: string;
+  createdAt: string;
+  url?: string | null;
+  thumbnailURL?: string | null;
+  filename?: string | null;
+  mimeType?: string | null;
+  filesize?: number | null;
+  width?: number | null;
+  height?: number | null;
+  focalX?: number | null;
+  focalY?: number | null;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -237,30 +280,6 @@ export interface Experience {
   slug: string;
   updatedAt: string;
   createdAt: string;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "media".
- */
-export interface Media {
-  id: number;
-  /**
-   * Décrit l'image pour les personnes malvoyantes et Google.
-   */
-  alt: string;
-  prefix?: string | null;
-  _objectKey?: string | null;
-  updatedAt: string;
-  createdAt: string;
-  url?: string | null;
-  thumbnailURL?: string | null;
-  filename?: string | null;
-  mimeType?: string | null;
-  filesize?: number | null;
-  width?: number | null;
-  height?: number | null;
-  focalX?: number | null;
-  focalY?: number | null;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -482,10 +501,23 @@ export interface EpisodesSelect<T extends boolean = true> {
   summary?: T;
   guestName?: T;
   guestRole?: T;
+  guestBio?: T;
+  guestPhoto?: T;
   spotifyUrl?: T;
   appleUrl?: T;
   deezerUrl?: T;
   youtubeUrl?: T;
+  extracts?:
+    | T
+    | {
+        title?: T;
+        number?: T;
+        durationSeconds?: T;
+        publishedAt?: T;
+        audioUrl?: T;
+        guid?: T;
+        id?: T;
+      };
   audioUrl?: T;
   imageUrl?: T;
   rssDescription?: T;

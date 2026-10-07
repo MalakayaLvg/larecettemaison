@@ -1,10 +1,11 @@
 import type { Payload } from "payload";
-import { fetchMainEpisodes } from "@/lib/podcast-feed";
+import { fetchPodcastFeed, groupExtractsByEpisode } from "@/lib/podcast-feed";
 
 // Idempotent (keyed on guid). Never overwrites slug or the fields edited in the admin
-// (summary, guest, platform links, featured).
+// (summary, guest, platform links, featured). Extracts are replaced on every sync.
 export async function syncPodcastEpisodes(payload: Payload) {
-  const feedEpisodes = await fetchMainEpisodes();
+  const { episodes: feedEpisodes, extracts } = await fetchPodcastFeed();
+  const extractsByEpisode = groupExtractsByEpisode(feedEpisodes, extracts);
   const { docs: existing } = await payload.find({
     collection: "episodes",
     select: { guid: true, slug: true },
@@ -15,7 +16,18 @@ export async function syncPodcastEpisodes(payload: Payload) {
 
   let created = 0;
   for (const { slug, guid, publishedAt, ...synced } of feedEpisodes) {
-    const data = { ...synced, publishedAt: publishedAt.toISOString() };
+    const data = {
+      ...synced,
+      publishedAt: publishedAt.toISOString(),
+      extracts: (extractsByEpisode.get(guid) ?? []).map((extract) => ({
+        guid: extract.guid,
+        title: extract.title,
+        number: extract.number,
+        durationSeconds: extract.durationSeconds,
+        publishedAt: extract.publishedAt.toISOString(),
+        audioUrl: extract.audioUrl,
+      })),
+    };
     const id = idByGuid.get(guid);
     if (id !== undefined) {
       await payload.update({ collection: "episodes", id, data });

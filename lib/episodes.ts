@@ -1,3 +1,4 @@
+import type { Where } from "payload";
 import { cache } from "react";
 import { getPayloadClient } from "@/lib/payload";
 
@@ -13,10 +14,14 @@ export async function getSeasons(): Promise<number[]> {
 
 // Only the fields needed by the episode cards. `hasMore` drives the "Voir plus" link.
 export async function getEpisodeList(season?: number, limit = 9) {
+  return getEpisodeListWhere(season ? { season: { equals: season } } : undefined, limit);
+}
+
+async function getEpisodeListWhere(where: Where | undefined, limit: number) {
   const payload = await getPayloadClient();
   const { docs, hasNextPage } = await payload.find({
     collection: "episodes",
-    where: season ? { season: { equals: season } } : undefined,
+    where,
     sort: "-publishedAt",
     limit,
     select: {
@@ -51,6 +56,12 @@ export async function getHomeEpisodes(limit = 3) {
     },
   });
   return docs;
+}
+
+// "D'autres épisodes" at the bottom of an episode page.
+export async function getOtherEpisodes(excludeSlug: string, limit = 3) {
+  const { episodes } = await getEpisodeListWhere({ slug: { not_equals: excludeSlug } }, limit);
+  return episodes;
 }
 
 // Wrapped in cache() so generateMetadata and the page share a single query.
