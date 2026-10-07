@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Placeholder } from "@/components/home/Placeholder";
+import Image from "next/image";
 import { cardClassName, ghostButtonClassName } from "@/components/home/Section";
 import type { experienceFormats } from "@/lib/content";
 
@@ -15,7 +15,16 @@ export function FormatCard({
 }) {
   return (
     <Link href={`/experiences/${format.type}`} className={`${cardClassName} group`}>
-      <Placeholder label={format.image} className="h-64 lg:h-80" />
+      <div className="relative h-64 lg:h-80">
+        <Image
+          src={format.photo}
+          alt={format.photoAlt}
+          fill
+          sizes="(min-width: 768px) 33vw, 100vw"
+          className="object-cover"
+          style={{ objectPosition: format.photoPosition }}
+        />
+      </div>
       <div className="flex flex-1 flex-col gap-3 px-6 pt-3 pb-6">
         <h3 className="text-2xl font-black group-hover:underline">{title}</h3>
         <p className="flex-1 opacity-80">{format.text}</p>

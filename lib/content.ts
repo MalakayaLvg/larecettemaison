@@ -1,10 +1,14 @@
 // Marketing copy shared by several pages (from the Figma wireframe).
 
+import type { StaticImageData } from "next/image";
 import type { ExperienceType } from "@/lib/site";
+import atelierPhoto from "@/public/images/home/atelier.jpg";
+import foodTourPhoto from "@/public/images/home/food-tour.jpg";
+import immersionPhoto from "@/public/images/home/immersion.jpg";
 
 export const missionStats = [
   { value: "Un quart", label: "de notre empreinte carbone est lié à notre alimentation" },
-  { value: "20 tonnes", label: "de nourriture jetée chaque minute en France." },
+  { value: "20 tonnes", label: "de nourriture jetées chaque minute en France." },
   { value: "1 Français/3", label: "souffre de maladies chroniques directement liées à son alimentation." },
 ];
 
@@ -20,7 +24,10 @@ export const experienceFormats: {
   type: ExperienceType;
   title: string;
   longTitle: string;
-  image: string;
+  photo: StaticImageData;
+  photoAlt: string;
+  /** CSS object-position, to keep the crop chosen in Figma. */
+  photoPosition?: string;
   text: string;
   price: string;
   cta: string;
@@ -29,7 +36,9 @@ export const experienceFormats: {
     type: "ateliers",
     title: "Ateliers (2 h)",
     longTitle: "Ateliers de cuisine (2 h)",
-    image: "Image — Atelier lactofermentation",
+    photo: atelierPhoto,
+    photoAlt: "Bocal de légumes en lactofermentation préparé pendant un atelier",
+    photoPosition: "50% 83%",
     text: "Vivez un atelier collectif et favorisez la cohésion d'équipe. Découvrez, cuisinez et apprenez ensemble aux côtés d'artisan·es et chef·fes engagé·es. Repartez avec des conseils et des recettes !",
     price: "70 € par personne",
     cta: "Voir les ateliers",
@@ -38,7 +47,8 @@ export const experienceFormats: {
     type: "food-tours",
     title: "Food tours (3 h)",
     longTitle: "Food tours à Lyon (3 h)",
-    image: "Image — Balade gustative à la Croix-Rousse",
+    photo: foodTourPhoto,
+    photoAlt: "Assiette dressée en cuisine lors d'un food tour",
     text: "Embarquez pour une balade gustative à la rencontre de celles et ceux qui façonnent l'alimentation de demain. Rencontrez des passionné·es et explorez les coulisses de nos assiettes : visites, ateliers, dégustations...",
     price: "À partir de 60 € par personne",
     cta: "Voir les food tours",
@@ -47,8 +57,9 @@ export const experienceFormats: {
     type: "immersions",
     title: "Immersions (journées)",
     longTitle: "Immersions à la ferme (journées)",
-    image: "Image — Immersion à la ferme",
-    text: "Partagez le quotidien et le savoir-faire de producteur·trices locaux. Semez, plantez, récoltez, vinifiez, fabriquez, au rythme des saisons. Tissez des liens et créez des souvenirs marquants.",
+    photo: immersionPhoto,
+    photoAlt: "Rangs de cultures maraîchères lors d'une immersion à la ferme",
+    text: "Partagez le quotidien et le savoir-faire de producteurs et productrices locaux. Semez, plantez, récoltez, vinifiez, fabriquez, au rythme des saisons. Tissez des liens et créez des souvenirs marquants.",
     price: "Tarif sur devis pour les entreprises.",
     cta: "Voir les immersions",
   },

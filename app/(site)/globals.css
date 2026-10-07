@@ -1,20 +1,39 @@
 @import "tailwindcss";
 
+/* Design tokens from the Figma file "la-recette" (variables of the "Accueil — UI Desktop" frame). */
 :root {
   --background: #ffffff;
-  --foreground: #171717;
+  --foreground: #262e3b;
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-}
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+  --color-ink: #262e3b; /* Text/Primary, Border/Strong, Background/Inverse */
+  --color-ink-soft: #4d5768; /* Text/Secondary */
+  --color-brand: #5db089; /* Background/Brand */
+  --color-brand-subtle: #dcefe5;
+  --color-brand-dark: #24533d; /* Text/Brand */
+  --color-accent: #cfd600; /* Background/Accent (lime) */
+  --color-accent-subtle: #f4f6c2;
+  --color-primary: #b8450c; /* Action/Primary */
+  --color-highlight: #e65d16; /* Background/Highlight */
+  --color-highlight-subtle: #fce3d3;
+
+  /* Body: Nunito. Headings: --font-display (swap the font in app/(site)/layout.tsx). */
+  --font-sans: var(--font-nunito);
+  --font-display: var(--font-bricolage);
+
+  /* "Ombre découpée" */
+  --shadow-cut: 8px 8px 0 0 var(--color-ink);
+
+  --animate-marquee: marquee 40s linear infinite;
+
+  @keyframes marquee {
+    to {
+      transform: translateX(-50%);
+    }
   }
 }
 
@@ -22,4 +41,13 @@ body {
   background: var(--background);
   color: var(--foreground);
   font-family: var(--font-sans), Arial, Helvetica, sans-serif;
+}
+
+@layer base {
+  h1,
+  h2,
+  h3,
+  h4 {
+    font-family: var(--font-display), var(--font-sans), sans-serif;
+  }
 }

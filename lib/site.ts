@@ -1,18 +1,21 @@
 export const siteName = "Maison La Recette";
 
+// Order from the Figma home page header. No dedicated B2B page yet: "Entreprises" leads to the
+// quote form.
 export const mainNav = [
   { href: "/podcast", label: "Podcast" },
-  { href: "/experiences", label: "Expériences" },
   { href: "/studio", label: "Studio" },
+  { href: "/experiences", label: "Expériences" },
+  { href: "/devis", label: "Entreprises" },
   { href: "/blog", label: "Blog" },
   { href: "/a-propos", label: "À propos" },
-  { href: "/contact", label: "Contact" },
+  { href: "/contact", label: "Contact / Devis" },
 ] as const;
 
 export const legalNav = [
   { href: "/mentions-legales", label: "Mentions légales" },
-  { href: "/confidentialite", label: "Politique de confidentialité" },
   { href: "/cgv", label: "CGV" },
+  { href: "/confidentialite", label: "Politique de confidentialité" },
 ] as const;
 
 // `eyebrow` and `others` adapt the experience page's wording (written for workshops in the
@@ -67,3 +70,9 @@ export function isArticleCategory(value: unknown): value is ArticleCategory {
 }
 
 export const contactEmail = "larecette@ecomail.fr";
+
+// Footer social links. Instagram and LinkedIn are in the Figma footer but their URLs are not
+// known yet: add them here.
+export const socialLinks: { label: string; href: string }[] = [
+  { label: "YouTube", href: "https://www.youtube.com/@Larecettepodcast" },
+];

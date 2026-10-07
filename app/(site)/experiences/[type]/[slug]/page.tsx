@@ -181,7 +181,7 @@ export default async function ExperiencePage(props: Props) {
       )}
 
       {/* 07 — Avis */}
-      <TestimonialsSection muted />
+      <TestimonialsSection />
 
       {/* 08 — Autre atelier */}
       {others.length > 0 && (

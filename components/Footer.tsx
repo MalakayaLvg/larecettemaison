@@ -1,40 +1,63 @@
+import Image from "next/image";
 import Link from "next/link";
 import { NewsletterForm } from "@/components/NewsletterForm";
-import { legalNav, mainNav, siteName } from "@/lib/site";
+import { containerClassName } from "@/components/home/Section";
+import { contactEmail, legalNav, mainNav, siteName, socialLinks } from "@/lib/site";
 
+// Figma "11 — Footer" (node 129:375).
 export function Footer() {
   return (
-    <footer className="mt-auto border-t border-black/10">
-      <div className="mx-auto grid max-w-6xl gap-8 px-4 py-10 sm:grid-cols-3">
-        <div>
-          <p className="font-semibold">{siteName}</p>
-          <p className="mt-2 text-sm opacity-70">
-            Accélérer la transition alimentaire, depuis Lyon.
-          </p>
+    <footer className="mt-auto bg-ink text-white">
+      <div className={`${containerClassName} space-y-16 pt-20 pb-8 lg:pt-24`}>
+        <div className="grid gap-12 md:grid-cols-2 lg:grid-cols-3 lg:gap-24">
+          <div className="space-y-6">
+            <Image src="/brand/logo-blanc.svg" alt={siteName} width={192} height={156} className="w-40 lg:w-48" />
+            <p className="text-lg leading-[1.55]">
+              <a href={`mailto:${contactEmail}`} className="hover:underline">
+                {contactEmail}
+              </a>
+            </p>
+            <ul className="flex flex-wrap gap-6 leading-[1.4] text-accent">
+              {socialLinks.map((link) => (
+                <li key={link.href}>
+                  <a href={link.href} target="_blank" rel="noopener noreferrer" className="hover:underline">
+                    {link.label}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          <nav aria-label="Plan du site">
+            <ul className="space-y-3 leading-[1.4]">
+              {mainNav.map((item) => (
+                <li key={item.href}>
+                  <Link href={item.href} className="hover:underline">
+                    {item.label}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </nav>
+
+          <div className="space-y-4 md:col-span-2 lg:col-span-1">
+            <h2 className="text-2xl leading-[1.25] font-bold">Newsletter</h2>
+            <p className="text-lg leading-[1.55]">
+              Recevez les nouveaux épisodes du podcast, nos prochaines expériences à Lyon et nos articles.
+            </p>
+            <NewsletterForm tone="dark" hideLabel />
+          </div>
         </div>
-        <nav aria-label="Plan du site">
-          <ul className="space-y-1 text-sm">
-            {mainNav.map((item) => (
-              <li key={item.href}>
-                <Link href={item.href} className="hover:underline">
-                  {item.label}
-                </Link>
-              </li>
-            ))}
-          </ul>
-        </nav>
-        <div className="space-y-6">
-          <NewsletterForm />
-          <ul className="space-y-1 text-sm">
-            {legalNav.map((item) => (
-              <li key={item.href}>
-                <Link href={item.href} className="hover:underline">
-                  {item.label}
-                </Link>
-              </li>
-            ))}
-          </ul>
-        </div>
+
+        <ul className="flex flex-wrap gap-x-8 gap-y-2 border-t border-white pt-6 leading-[1.4]">
+          {legalNav.map((item) => (
+            <li key={item.href}>
+              <Link href={item.href} className="hover:underline">
+                {item.label}
+              </Link>
+            </li>
+          ))}
+        </ul>
       </div>
     </footer>
   );

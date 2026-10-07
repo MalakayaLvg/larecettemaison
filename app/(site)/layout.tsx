@@ -1,12 +1,18 @@
 import type { Metadata } from "next";
-import { Geist } from "next/font/google";
+import { Bricolage_Grotesque, Nunito } from "next/font/google";
 import { Footer } from "@/components/Footer";
 import { Header } from "@/components/Header";
 import { siteName } from "@/lib/site";
 import "./globals.css";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+// Heading font (Figma "La Recette/Heading"): may change, only this declaration needs updating.
+const display = Bricolage_Grotesque({
+  variable: "--font-bricolage",
+  subsets: ["latin"],
+});
+
+const nunito = Nunito({
+  variable: "--font-nunito",
   subsets: ["latin"],
 });
 
@@ -23,7 +29,7 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
-    <html lang="fr" className={`${geistSans.variable} h-full antialiased`}>
+    <html lang="fr" className={`${display.variable} ${nunito.variable} h-full antialiased`}>
       <body className="flex min-h-full flex-col">
         <Header />
         <main className="flex-1">{children}</main>

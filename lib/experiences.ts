@@ -25,7 +25,15 @@ export async function getHomeExperiences(limit = 3) {
     collection: "experiences",
     sort: "-updatedAt",
     limit,
-    select: { slug: true, type: true, title: true, duration: true, lumaUrl: true },
+    select: {
+      slug: true,
+      type: true,
+      title: true,
+      duration: true,
+      location: true,
+      price: true,
+      availability: true,
+    },
   });
   return docs;
 }
