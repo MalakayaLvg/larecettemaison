@@ -11,13 +11,14 @@
     "sync:podcast": "tsx scripts/sync-podcast.ts",
     "payload": "payload",
     "generate:types": "payload generate:types",
-    "generate:importmap": "payload generate:importmap"
+    "generate:importmap": "BLOB_READ_WRITE_TOKEN=${BLOB_READ_WRITE_TOKEN:-vercel_blob_rw_placeholder_token} payload generate:importmap"
   },
   "dependencies": {
     "@payloadcms/db-postgres": "^3.90.2",
     "@payloadcms/email-nodemailer": "^3.90.2",
     "@payloadcms/next": "^3.90.2",
     "@payloadcms/richtext-lexical": "^3.90.2",
+    "@payloadcms/storage-vercel-blob": "^3.90.2",
     "@payloadcms/translations": "^3.90.2",
     "@payloadcms/ui": "^3.90.2",
     "drizzle-kit": "^0.31.7",

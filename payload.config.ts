@@ -1,6 +1,7 @@
 import { postgresAdapter } from "@payloadcms/db-postgres";
 import { nodemailerAdapter } from "@payloadcms/email-nodemailer";
 import { lexicalEditor } from "@payloadcms/richtext-lexical";
+import { vercelBlobStorage } from "@payloadcms/storage-vercel-blob";
 import { fr } from "@payloadcms/translations/languages/fr";
 import path from "path";
 import { buildConfig } from "payload";
@@ -15,6 +16,7 @@ import { StudioOffers } from "./collections/StudioOffers";
 import { Subscribers } from "./collections/Subscribers";
 import { Testimonials } from "./collections/Testimonials";
 import { Users } from "./collections/Users";
+import { migrations } from "./migrations";
 
 const dirname = path.dirname(fileURLToPath(import.meta.url));
 
@@ -39,7 +41,24 @@ export default buildConfig({
   i18n: { supportedLanguages: { fr }, fallbackLanguage: "fr" },
   secret: process.env.PAYLOAD_SECRET || "",
   typescript: { outputFile: path.resolve(dirname, "payload-types.ts") },
-  db: postgresAdapter({ pool: { connectionString: process.env.DATABASE_URL } }),
+  db: postgresAdapter({
+    pool: { connectionString: process.env.DATABASE_URL },
+    migrationDir: path.resolve(dirname, "migrations"),
+    // In production, pending migrations run when Payload starts (no push of the schema there).
+    // After changing a collection: `npm run payload migrate:create <name>` and commit the file.
+    prodMigrations: migrations,
+  }),
+  plugins: [
+    // Uploads go to Vercel Blob when deployed (Vercel sets BLOB_READ_WRITE_TOKEN), to ./media locally.
+    vercelBlobStorage({
+      token: process.env.BLOB_READ_WRITE_TOKEN,
+      collections: { media: true },
+      // Same schema with or without the plugin, so migrations match in every environment.
+      alwaysInsertFields: true,
+      // Browser uploads straight to Blob: Vercel functions reject request bodies over ~4.5 MB.
+      clientUploads: true,
+    }),
+  ],
   sharp,
   // SMTP_* point to Mailpit in development (see compose.yaml). Without SMTP_HOST, Payload
   // only logs emails to the console.

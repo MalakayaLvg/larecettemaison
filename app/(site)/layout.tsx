@@ -11,6 +11,8 @@ const geistSans = Geist({
 });
 
 export const metadata: Metadata = {
+  // Makes relative image URLs (Open Graph, etc.) absolute.
+  metadataBase: new URL(process.env.SITE_URL || "http://localhost:3000"),
   title: {
     default: siteName,
     template: `%s | ${siteName}`,
