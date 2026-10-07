@@ -18,6 +18,18 @@ export async function getExperiencesByType(type: ExperienceType) {
   return docs;
 }
 
+// Home page "Prochaines sessions": the most recently updated experiences.
+export async function getHomeExperiences(limit = 3) {
+  const payload = await getPayloadClient();
+  const { docs } = await payload.find({
+    collection: "experiences",
+    sort: "-updatedAt",
+    limit,
+    select: { slug: true, type: true, title: true, duration: true, lumaUrl: true },
+  });
+  return docs;
+}
+
 export type ExperienceListItem = Awaited<ReturnType<typeof getExperiencesByType>>[number];
 
 // Wrapped in cache() so generateMetadata and the page share a single query.

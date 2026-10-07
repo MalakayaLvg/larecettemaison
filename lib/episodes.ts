@@ -34,6 +34,25 @@ export async function getEpisodeList(season?: number) {
 
 export type EpisodeListItem = Awaited<ReturnType<typeof getEpisodeList>>[number];
 
+// Home page: episodes marked "À la une" in the admin first, then the most recent ones.
+export async function getHomeEpisodes(limit = 3) {
+  const payload = await getPayloadClient();
+  const { docs } = await payload.find({
+    collection: "episodes",
+    sort: ["-featured", "-publishedAt"],
+    limit,
+    select: {
+      slug: true,
+      title: true,
+      season: true,
+      publishedAt: true,
+      durationSeconds: true,
+      imageUrl: true,
+    },
+  });
+  return docs;
+}
+
 // Wrapped in cache() so generateMetadata and the page share a single query.
 export const getEpisode = cache(async (season: number, slug: string) => {
   const payload = await getPayloadClient();
