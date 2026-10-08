@@ -21,6 +21,7 @@
     "@payloadcms/storage-vercel-blob": "^3.90.2",
     "@payloadcms/translations": "^3.90.2",
     "@payloadcms/ui": "^3.90.2",
+    "@vercel/analytics": "^2.0.1",
     "drizzle-kit": "^0.31.7",
     "fast-xml-parser": "^5.11.2",
     "graphql": "^16.14.2",

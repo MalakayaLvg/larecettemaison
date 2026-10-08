@@ -1,3 +1,4 @@
+import { Analytics } from "@vercel/analytics/next";
 import type { Metadata } from "next";
 import { Bricolage_Grotesque, Nunito } from "next/font/google";
 import { Footer } from "@/components/Footer";
@@ -34,6 +35,8 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         <Header />
         <main className="flex-1">{children}</main>
         <Footer />
+        {/* Vercel Web Analytics: cookieless page views, enabled in the Vercel project. Inactive locally. */}
+        <Analytics />
       </body>
     </html>
   );
