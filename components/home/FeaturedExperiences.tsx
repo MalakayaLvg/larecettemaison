@@ -1,58 +1,84 @@
 import Image from "next/image";
 import Link from "next/link";
-import {
-  buttonClassName,
-  containerClassName,
-  cutCardClassName,
-  eyebrowClassName,
-  h2ClassName,
-} from "@/components/home/Section";
+import { buttonClassName, containerClassName, SectionHeading, SlopeCut, slopedSectionClassName } from "@/components/home/Section";
 import { experienceFormats } from "@/lib/content";
+import type { ExperienceType } from "@/lib/site";
 
-// Figma "05 — Expériences à la une" (node 129:221): one horizontal card per format, photo
-// alternating left / right. Each card links to the list of experiences of that type.
+// Per-format visual from the mockup: the green "bowl" behind each photo and the photo's tilt.
+const visuals: Record<ExperienceType, { bowl: string; rotate: string }> = {
+  ateliers: { bowl: "/deco/bol-vert-1.svg", rotate: "-rotate-[3.5deg]" },
+  "food-tours": { bowl: "/deco/bol-vert-2.svg", rotate: "rotate-[3.5deg]" },
+  immersions: { bowl: "/deco/bol-vert-3.svg", rotate: "-rotate-3" },
+};
+
+// Figma "05 — Expériences à la une" (V4, node 186:190): one row per format, a tilted photo on
+// a green bowl alternating left / right. Each row links to the experiences of that type.
+// Positions in the visual are percentages of the 900×348 design box.
 export function FeaturedExperiences() {
   return (
-    <section className="bg-brand">
-      <div className={`${containerClassName} flex flex-col items-center gap-12 py-20 lg:gap-16 lg:py-32`}>
-        <div className="w-full space-y-4">
-          <p className={eyebrowClassName}>Ateliers, food tours et immersions à Lyon</p>
-          <h2 className={h2ClassName}>Des expériences clés en main et sur mesure</h2>
-        </div>
+    <section className={slopedSectionClassName}>
+      <Image
+        src="/deco/tomate.svg"
+        alt=""
+        width={273}
+        height={273}
+        className="pointer-events-none absolute -top-[63px] -right-[87px] w-[180px] lg:w-[273px]"
+      />
+      <div className={`${containerClassName} relative flex flex-col items-center gap-12 lg:gap-16`}>
+        <SectionHeading
+          poster
+          eyebrow="Ateliers, food tours et immersions à Lyon"
+          title="Des expériences clés en main et sur mesure"
+          className="w-full"
+        />
 
-        <ul className="grid w-full gap-12">
-          {experienceFormats.map((format, index) => (
-            <li key={format.type}>
-              <Link
-                href={`/experiences/${format.type}`}
-                className={`${cutCardClassName} group flex flex-col md:flex-row ${index % 2 === 1 ? "md:flex-row-reverse" : ""}`}
-              >
-                <div className="relative h-64 shrink-0 md:h-auto md:min-h-[332px] md:w-[47%]">
-                  <Image
-                    src={format.photo}
-                    alt={format.photoAlt}
-                    fill
-                    sizes="(min-width: 768px) 45vw, 100vw"
-                    className="object-cover"
-                    style={{ objectPosition: format.photoPosition }}
-                  />
-                </div>
-                <div className="flex flex-1 flex-col items-start justify-center gap-4 p-6 sm:p-10 xl:p-16">
-                  <h3 className="text-[32px] leading-[1.15] font-bold group-hover:underline">{format.longTitle}</h3>
-                  <p className="max-w-[640px] text-lg leading-[1.55]">{format.text}</p>
-                  <p className="mt-1 rotate-3 rounded-full border-2 border-ink bg-accent px-4 py-2 leading-[1.4]">
-                    {format.price}
-                  </p>
-                </div>
-              </Link>
-            </li>
-          ))}
+        <ul className="grid w-full gap-16 lg:gap-[72px]">
+          {experienceFormats.map((format, index) => {
+            const visual = visuals[format.type];
+            return (
+              <li key={format.type}>
+                <Link
+                  href={`/experiences/${format.type}`}
+                  className={`group grid items-center gap-8 md:gap-0 ${index % 2 === 1 ? "md:grid-cols-[860fr_900fr]" : "md:grid-cols-[900fr_860fr]"}`}
+                >
+                  <div className={`relative aspect-[900/348] ${index % 2 === 1 ? "md:order-2" : ""}`}>
+                    <Image
+                      src={visual.bowl}
+                      alt=""
+                      width={860}
+                      height={266}
+                      className="absolute top-[39.7%] left-[-1.1%] w-[95.6%] max-w-none"
+                    />
+                    <div className={`absolute top-[6.8%] left-[4.4%] h-[86.2%] w-[86.7%] overflow-hidden ${visual.rotate}`}>
+                      <Image
+                        src={format.photo}
+                        alt={format.photoAlt}
+                        fill
+                        sizes="(min-width: 768px) 42vw, 90vw"
+                        className="object-cover transition-transform duration-300 group-hover:scale-105"
+                        style={{ objectPosition: format.photoPosition }}
+                      />
+                    </div>
+                  </div>
+                  <div className="flex flex-col items-start gap-4 md:py-[72px] md:pl-16">
+                    <h3 className="text-[32px] leading-[1.15] font-bold group-hover:underline">{format.longTitle}</h3>
+                    <p className="max-w-[640px] text-lg leading-[1.55]">{format.text}</p>
+                    {/* Figma "Prix" sticker */}
+                    <p className="rotate-2 rounded-full border-2 border-ink bg-accent px-4 py-2 text-lg leading-[1.4] font-semibold shadow-cut-sm">
+                      {format.price}
+                    </p>
+                  </div>
+                </Link>
+              </li>
+            );
+          })}
         </ul>
 
-        <Link href="/devis" className={buttonClassName}>
+        <Link href="/devis" className={`${buttonClassName}`}>
           Demander un devis
         </Link>
       </div>
+      <SlopeCut color="vert-clair" />
     </section>
   );
 }

@@ -1,15 +1,24 @@
 import { Analytics } from "@vercel/analytics/next";
 import type { Metadata } from "next";
-import { Bricolage_Grotesque, Nunito } from "next/font/google";
+import { Alegreya_Sans, Montserrat, Nunito } from "next/font/google";
 import { Footer } from "@/components/Footer";
 import { Header } from "@/components/Header";
 import { siteName } from "@/lib/site";
 import "./globals.css";
 
-// Heading font (Figma "La Recette/Heading"): may change, only this declaration needs updating.
-const display = Bricolage_Grotesque({
-  variable: "--font-bricolage",
+// Heading font (Figma "La Recette/Heading", "Display", "Quote").
+const display = Alegreya_Sans({
+  variable: "--font-alegreya",
   subsets: ["latin"],
+  weight: ["500", "700", "800"],
+});
+
+// Poster titles and key figures. The V4 mockup uses "Bartok" (trial licence only): Montserrat
+// Black replaces it, as in the home page H1.
+const poster = Montserrat({
+  variable: "--font-montserrat",
+  subsets: ["latin"],
+  weight: "900",
 });
 
 const nunito = Nunito({
@@ -30,7 +39,7 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
-    <html lang="fr" className={`${display.variable} ${nunito.variable} h-full antialiased`}>
+    <html lang="fr" className={`${display.variable} ${poster.variable} ${nunito.variable} h-full antialiased`}>
       <body className="flex min-h-full flex-col">
         <Header />
         <main className="flex-1">{children}</main>

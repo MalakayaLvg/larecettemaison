@@ -79,6 +79,24 @@ export async function getBookableSessions(experienceId: number): Promise<Bookabl
   }));
 }
 
+// Next sessions across all experiences (home page "Prochaines sessions"), with their experience.
+export async function getUpcomingSessions(limit: number) {
+  const payload = await getPayloadClient();
+  const { docs } = await payload.find({
+    collection: "sessions",
+    where: { startsAt: { greater_than: new Date().toISOString() } },
+    sort: "startsAt",
+    limit,
+    depth: 1,
+  });
+  const taken = await takenSeats(payload, docs.map((session) => session.id));
+  return docs.flatMap((session) =>
+    typeof session.experience === "object" && session.experience.bookingPrice
+      ? [{ ...session, experience: session.experience, remaining: Math.max(0, session.capacity - (taken.get(session.id) ?? 0)) }]
+      : [],
+  );
+}
+
 // Called by the Stripe webhook and by the confirmation page (whichever comes first, so a missing
 // webhook in development doesn't leave bookings unpaid). The status switch is a single SQL
 // update: when both arrive at the same time, only one of them sends the emails.

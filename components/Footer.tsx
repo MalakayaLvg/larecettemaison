@@ -4,11 +4,18 @@ import { NewsletterForm } from "@/components/NewsletterForm";
 import { containerClassName } from "@/components/home/Section";
 import { contactEmail, legalNav, mainNav, siteName, socialLinks } from "@/lib/site";
 
-// Figma "11 — Footer" (node 129:375).
+// Figma "11 — Footer" (V4, node 186:329).
 export function Footer() {
   return (
-    <footer className="mt-auto bg-ink text-white">
-      <div className={`${containerClassName} space-y-16 pt-20 pb-8 lg:pt-24`}>
+    <footer className="relative mt-auto overflow-hidden bg-ink text-white">
+      <Image
+        src="/deco/rond-vert.svg"
+        alt=""
+        width={240}
+        height={240}
+        className="pointer-events-none absolute -top-[120px] -right-[60px] w-[180px] lg:w-[240px]"
+      />
+      <div className={`${containerClassName} relative space-y-16 pt-20 pb-8 lg:pt-24`}>
         <div className="grid gap-12 md:grid-cols-2 lg:grid-cols-3 lg:gap-24">
           <div className="space-y-6">
             <Image src="/brand/logo-blanc.svg" alt={siteName} width={192} height={156} className="w-40 lg:w-48" />
@@ -17,7 +24,7 @@ export function Footer() {
                 {contactEmail}
               </a>
             </p>
-            <ul className="flex flex-wrap gap-6 leading-[1.4] text-accent">
+            <ul className="flex flex-wrap gap-6 text-lg leading-[1.4] font-semibold text-accent">
               {socialLinks.map((link) => (
                 <li key={link.href}>
                   <a href={link.href} target="_blank" rel="noopener noreferrer" className="hover:underline">
@@ -29,7 +36,7 @@ export function Footer() {
           </div>
 
           <nav aria-label="Plan du site">
-            <ul className="space-y-3 leading-[1.4]">
+            <ul className="space-y-3 text-lg leading-[1.4] font-semibold">
               {mainNav.map((item) => (
                 <li key={item.href}>
                   <Link href={item.href} className="hover:underline">
@@ -50,7 +57,7 @@ export function Footer() {
           </div>
         </div>
 
-        <ul className="flex flex-wrap gap-x-8 gap-y-2 border-t border-white pt-6 leading-[1.4]">
+        <ul className="flex flex-wrap gap-x-8 gap-y-2 border-t border-white pt-6 text-lg leading-[1.4] font-semibold">
           {legalNav.map((item) => (
             <li key={item.href}>
               <Link href={item.href} className="hover:underline">

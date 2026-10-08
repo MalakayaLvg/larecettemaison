@@ -1,16 +1,20 @@
 import Image, { type StaticImageData } from "next/image";
 import Link from "next/link";
 import {
+  accentButtonClassName,
   containerClassName,
-  cutCardClassName,
-  h2ClassName,
-  outlineButtonClassName,
+  darkButtonClassName,
+  SectionHeading,
+  SlopeCut,
+  slopedSectionClassName,
 } from "@/components/home/Section";
 import experiencesPhoto from "@/public/images/home/experiences.jpg";
 import podcastPhoto from "@/public/images/home/podcast.jpg";
 import studioPhoto from "@/public/images/home/studio.jpg";
 
 type Field = {
+  /** Card colours (Figma V4): navy, green or white. */
+  tone: "dark" | "brand" | "light";
   number: string;
   title: string;
   text: string;
@@ -21,6 +25,7 @@ type Field = {
 };
 
 const podcast: Field = {
+  tone: "dark",
   number: "01",
   title: "Podcast",
   text: "Un podcast grand public sur l'alimentation durable, qui part à la rencontre d'acteur·ices du changement et met en lumière des solutions.",
@@ -32,6 +37,7 @@ const podcast: Field = {
 
 const others: Field[] = [
   {
+    tone: "brand",
     number: "02",
     title: "Studio",
     text: "Un studio de production de podcasts qui aide les organisations engagées dans l'alimentation durable à faire entendre leur voix.",
@@ -41,6 +47,7 @@ const others: Field[] = [
     photoPosition: "83% 50%",
   },
   {
+    tone: "light",
     number: "03",
     title: "Expériences",
     text: "Des expériences impactantes (ateliers, immersions, séjours) qui fédèrent, engagent et sensibilisent à une meilleure alimentation.",
@@ -50,15 +57,35 @@ const others: Field[] = [
   },
 ];
 
-// Figma "04 — Champs d'action" (node 129:172): one large card on the left, two horizontal
+const cardClassNames = {
+  dark: "bg-ink text-white shadow-cut-brand",
+  brand: "bg-brand shadow-cut",
+  light: "bg-background shadow-cut",
+};
+
+// Figma "04 — Champs d'action" (V4, node 186:160): one large card on the left, two horizontal
 // cards stacked on the right.
 export function ActionFields() {
   return (
-    <section className="bg-brand-subtle">
-      <div className={`${containerClassName} space-y-12 py-20 lg:space-y-16 lg:py-32`}>
-        <h2 className={h2ClassName}>Champs d&apos;action : podcast, studio et expériences</h2>
+    <section className={`${slopedSectionClassName} bg-brand-subtle`}>
+      <Image
+        src="/deco/rond-vert.svg"
+        alt=""
+        width={320}
+        height={320}
+        className="pointer-events-none absolute -top-[140px] -right-[90px] w-[200px] lg:w-[320px]"
+      />
+      <Image
+        src="/deco/legume-lime.svg"
+        alt=""
+        width={191}
+        height={220}
+        className="pointer-events-none absolute bottom-[calc(5vw-60px)] -left-[115px] w-[150px] rotate-8 lg:w-[191px]"
+      />
+      <div className={`${containerClassName} relative space-y-12 lg:space-y-16`}>
+        <SectionHeading eyebrow="Maison La Recette" title="Champs d'action : podcast, studio et expériences" />
         <div className="grid gap-8 xl:grid-cols-[980fr_748fr]">
-          <article className={`${cutCardClassName} flex flex-col`}>
+          <article className={`flex flex-col overflow-hidden border-2 border-ink ${cardClassNames[podcast.tone]}`}>
             <div className="relative h-64 sm:h-[440px]">
               <FieldPhoto field={podcast} sizes="(min-width: 1280px) 51vw, 100vw" />
             </div>
@@ -66,7 +93,10 @@ export function ActionFields() {
           </article>
           <div className="grid gap-8">
             {others.map((field) => (
-              <article key={field.number} className={`${cutCardClassName} flex flex-col sm:flex-row`}>
+              <article
+                key={field.number}
+                className={`flex flex-col overflow-hidden border-2 border-ink sm:flex-row ${cardClassNames[field.tone]}`}
+              >
                 <div className="relative h-64 shrink-0 sm:h-auto sm:w-[39%]">
                   <FieldPhoto field={field} sizes="(min-width: 1280px) 15vw, (min-width: 640px) 39vw, 100vw" />
                 </div>
@@ -76,6 +106,7 @@ export function ActionFields() {
           </div>
         </div>
       </div>
+      <SlopeCut color="blanc" />
     </section>
   );
 }
@@ -94,14 +125,15 @@ function FieldPhoto({ field, sizes }: { field: Field; sizes: string }) {
 }
 
 function FieldContent({ field }: { field: Field }) {
+  const dark = field.tone === "dark";
   return (
     <div className="flex flex-1 flex-col items-start justify-center gap-4 p-6 sm:p-8">
-      <p className="font-display text-5xl leading-none font-extrabold tracking-[-0.02em] text-primary">
+      <p className={`font-display text-5xl leading-none font-extrabold tracking-[-0.02em] ${dark ? "text-accent" : ""}`}>
         {field.number}
       </p>
       <h3 className="text-[32px] leading-[1.15] font-bold">{field.title}</h3>
       <p className="text-lg leading-[1.55]">{field.text}</p>
-      <Link href={field.cta.href} className={outlineButtonClassName}>
+      <Link href={field.cta.href} className={`${dark ? accentButtonClassName : darkButtonClassName}`}>
         {field.cta.label}
       </Link>
     </div>

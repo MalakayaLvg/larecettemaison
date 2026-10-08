@@ -8,7 +8,7 @@ export function MobileMenu({ children }: { children: React.ReactNode }) {
 
   return (
     <details key={pathname} className="group relative lg:hidden">
-      <summary className="flex size-14 cursor-pointer list-none items-center justify-center rounded-full border-2 border-ink [&::-webkit-details-marker]:hidden">
+      <summary className="flex size-14 cursor-pointer list-none items-center justify-center rounded-full border-2 border-current [&::-webkit-details-marker]:hidden">
         <span className="sr-only">Menu</span>
         <span aria-hidden className="text-2xl leading-none group-open:hidden">☰</span>
         <span aria-hidden className="hidden text-2xl leading-none group-open:inline">✕</span>

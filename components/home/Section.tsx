@@ -1,3 +1,5 @@
+import Image from "next/image";
+
 // Home page section: full-width band (white or grey, alternating in the wireframe) with an
 // optional eyebrow, title and intro text above the content.
 export function Section({
@@ -41,30 +43,106 @@ export function StatCard({ value, label }: { value: string; label: string }) {
 // Figma text styles "La Recette/Label/Eyebrow" and "La Recette/Heading/H2".
 export const eyebrowClassName = "text-[15px] leading-[1.2] tracking-[0.08em] uppercase";
 
-export const h2ClassName =
-  "font-display text-[clamp(2.25rem,3vw,3.5rem)] leading-[1.05] font-extrabold tracking-[-0.027em]";
+export const h2ClassName = "font-display text-[clamp(2.25rem,3vw,3.5rem)] leading-[1.05] font-extrabold";
+
+// Titles set in the "poster" font in the V4 mockup (Bartok there, Montserrat Black here).
+export const posterH2ClassName = "font-poster text-[clamp(2rem,2.9vw,3.5rem)] leading-[1.05] font-black";
 
 // White card with a 2px border and the flat "cut-out" shadow.
 export const cutCardClassName = "overflow-hidden rounded-lg border-2 border-ink bg-background shadow-cut";
 
 export const cardClassName = "flex flex-col overflow-hidden rounded-lg border border-black/15 bg-background";
 
-// Pill button (Figma "La Recette/Button"): primary = main action, outline = secondary action
-// on a light or green background.
+// Pill button (Figma "La Recette/Button"): navy border, small cut-out shadow and an arrow drawn
+// after the label (public/icons/fleche.svg used as a mask, so it takes the text colour).
+// Primary = main action, outline = secondary action on a light or green background.
 const pillClassName =
-  "inline-flex h-14 items-center justify-center gap-2 rounded-full border-2 px-8 text-lg leading-[1.2] whitespace-nowrap transition-colors";
+  "inline-flex h-14 items-center justify-center gap-2 rounded-full border-2 border-ink px-8 text-lg leading-[1.2] font-bold whitespace-nowrap shadow-cut-sm transition-colors after:size-4 after:shrink-0 after:bg-current after:content-[''] after:[mask:url(/icons/fleche.svg)_center/contain_no-repeat]";
 
-export const buttonClassName = `${pillClassName} border-primary bg-primary text-white hover:border-ink hover:bg-ink`;
+export const buttonClassName = `${pillClassName} bg-primary text-white hover:bg-ink`;
 
 // On a navy background.
-export const accentButtonClassName = `${pillClassName} border-accent bg-accent text-ink hover:border-white hover:bg-white`;
+export const accentButtonClassName = `${pillClassName} bg-accent text-ink hover:bg-white`;
 
 // On a lime or green background.
-export const darkButtonClassName = `${pillClassName} border-ink bg-ink text-white hover:border-primary hover:bg-primary`;
+export const darkButtonClassName = `${pillClassName} bg-ink text-white hover:bg-primary`;
 
-export const outlineButtonClassName = `${pillClassName} border-ink text-ink hover:bg-ink hover:text-white`;
+export const outlineButtonClassName = `${pillClassName} text-ink hover:bg-ink hover:text-white`;
 
 // Full-width page container (1760px content at 1920px, 80px side padding on desktop).
 export const containerClassName = "mx-auto w-full max-w-[1920px] px-4 sm:px-10 xl:px-20";
 
 export const ghostButtonClassName = "inline-flex items-center justify-center py-3 font-medium opacity-70 hover:opacity-100 hover:underline";
+
+// Figma "Sticker eyebrow": small tilted lime label.
+export function Sticker({ children }: { children: React.ReactNode }) {
+  return (
+    <p className={`${eyebrowClassName} inline-block rotate-2 rounded-[4px] border-2 border-ink bg-accent px-3.5 py-1.5 font-bold text-ink`}>
+      {children}
+    </p>
+  );
+}
+
+// V4 section heading: eyebrow sticker, title, and the tilted "Souligné" mark under its start.
+export function SectionHeading({
+  eyebrow,
+  title,
+  poster = false,
+  large = false,
+  onDark = false,
+  center = false,
+  underline = true,
+  className = "",
+}: {
+  eyebrow: string;
+  title: React.ReactNode;
+  /** Poster font (Montserrat Black) instead of Alegreya Sans. */
+  poster?: boolean;
+  /** 64px instead of 56px (reviews and final CTA). */
+  large?: boolean;
+  onDark?: boolean;
+  center?: boolean;
+  underline?: boolean;
+  className?: string;
+}) {
+  const titleClassName = poster
+    ? large
+      ? "font-poster text-[clamp(2.25rem,3.3vw,4rem)] leading-none font-black"
+      : posterH2ClassName
+    : h2ClassName;
+  return (
+    <div className={`flex flex-col gap-4 ${center ? "items-center text-center" : "items-start"} ${className}`}>
+      <Sticker>{eyebrow}</Sticker>
+      <div className="relative">
+        <h2 className={`${titleClassName} relative`}>{title}</h2>
+        {underline && (
+          <span
+            aria-hidden
+            className={`absolute -bottom-[18px] -left-1.5 h-3.5 w-[180px] rotate-[1.5deg] rounded-[7px] ${onDark ? "bg-accent" : "bg-brand"}`}
+          />
+        )}
+      </div>
+    </div>
+  );
+}
+
+// Figma "Coupe — pente logo": slanted bottom edge filled with the next section's colour.
+// The parent section must be `relative`; the files are in public/deco/coupe-*.svg.
+export function SlopeCut({
+  color,
+}: {
+  color: "blanc" | "blanc-basse" | "vert" | "vert-clair" | "marine";
+}) {
+  return (
+    <Image
+      src={`/deco/coupe-${color}.svg`}
+      alt=""
+      width={1920}
+      height={color === "blanc-basse" ? 82 : 96}
+      className={`pointer-events-none absolute bottom-0 left-0 w-full ${color === "blanc-basse" ? "h-[4.27vw]" : "h-[5vw]"}`}
+    />
+  );
+}
+
+// Section padding with room for the slope cut (128px at 1920px wide, as in Figma).
+export const slopedSectionClassName = "relative overflow-hidden pt-20 pb-[calc(5vw+3rem)] lg:pt-32 lg:pb-[calc(5vw+4rem)]";

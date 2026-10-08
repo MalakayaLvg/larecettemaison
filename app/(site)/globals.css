@@ -21,12 +21,17 @@
   --color-highlight: #e65d16; /* Background/Highlight */
   --color-highlight-subtle: #fce3d3;
 
-  /* Body: Nunito. Headings: --font-display (swap the font in app/(site)/layout.tsx). */
+  /* Body: Nunito. Headings: Alegreya Sans. Poster titles and figures: Montserrat Black.
+     The fonts are declared in app/(site)/layout.tsx. */
   --font-sans: var(--font-nunito);
-  --font-display: var(--font-bricolage);
+  --font-display: var(--font-alegreya);
+  --font-poster: var(--font-montserrat);
 
-  /* "Ombre découpée" */
+  /* "Ombre découpée" (and its small and "sur marine" variants) */
   --shadow-cut: 8px 8px 0 0 var(--color-ink);
+  --shadow-cut-sm: 4px 4px 0 0 var(--color-ink);
+  --shadow-cut-brand: 8px 8px 0 0 var(--color-brand);
+  --shadow-cut-sm-brand: 4px 4px 0 0 var(--color-brand);
 
   --animate-marquee: marquee 40s linear infinite;
 

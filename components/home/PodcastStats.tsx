@@ -1,20 +1,27 @@
-import { containerClassName } from "@/components/home/Section";
+import { containerClassName, SlopeCut } from "@/components/home/Section";
 import { podcastStats } from "@/lib/content";
 
-// Figma "08 — Chiffres podcast" (node 129:335): lime band with four key figures.
+// Alternating tilt of the cards, as in the mockup.
+const tilts = ["rotate-1", "-rotate-1", "rotate-1", "-rotate-1"];
+
+// Figma "08 — Chiffres podcast" (V4, node 186:283): four key figures on white cards, green band.
 export function PodcastStats() {
   return (
-    <section className="bg-accent">
-      <dl className={`${containerClassName} grid gap-10 py-20 sm:grid-cols-2 lg:py-24 xl:grid-cols-4 xl:gap-12`}>
-        {podcastStats.map((stat) => (
-          <div key={stat.value} className="flex flex-col gap-3 border-l-2 border-ink pl-6">
-            <dt className="font-display text-5xl leading-none font-extrabold tracking-[-0.03em] xl:text-[64px]">
-              {stat.value}
-            </dt>
-            <dd className="text-lg leading-[1.5] lg:text-[22px]">{stat.label}</dd>
+    <section className="relative overflow-hidden bg-brand pt-20 pb-[calc(4.27vw+4rem)] lg:pt-24 lg:pb-[160px]">
+      <dl
+        className={`${containerClassName} relative grid gap-10 sm:grid-cols-2 xl:grid-cols-[392fr_392fr_473fr_392fr]`}
+      >
+        {podcastStats.map((stat, index) => (
+          <div
+            key={stat.value}
+            className={`flex flex-col gap-2 border-2 border-ink bg-background px-6 py-7 shadow-cut ${tilts[index % tilts.length]}`}
+          >
+            <dt className="font-poster text-5xl leading-none font-black whitespace-nowrap xl:text-[clamp(2.25rem,3.2vw,4rem)]">{stat.value}</dt>
+            <dd className="text-lg leading-[1.2] lg:text-[22px]">{stat.label}</dd>
           </div>
         ))}
       </dl>
+      <SlopeCut color="blanc-basse" />
     </section>
   );
 }

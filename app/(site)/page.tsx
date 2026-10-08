@@ -9,8 +9,8 @@ import { TestimonialsSection } from "@/components/home/TestimonialsSection";
 import { TopicsBand } from "@/components/home/TopicsBand";
 import { UpcomingSessions } from "@/components/home/UpcomingSessions";
 
-// Figma "Accueil — UI Desktop 1920 · V3" (node 129:90). Header (01) and footer (11) are in the
-// site layout.
+// Figma "Accueil — UI Desktop 1920 · V4" (node 186:106). Header (01) and footer (11) are in the
+// site layout. Each section ends with a slanted cut in the colour of the next one.
 
 export default function HomePage() {
   return (
@@ -29,7 +29,7 @@ export default function HomePage() {
       <FeaturedExperiences />
 
       {/* 06 — Prochaines sessions */}
-      <UpcomingSessions allDatesHref="/experiences" />
+      <UpcomingSessions allDatesHref="/experiences" slope />
 
       {/* 07 — Podcast à la une */}
       <PodcastFeature />
@@ -38,7 +38,7 @@ export default function HomePage() {
       <PodcastStats />
 
       {/* 09 — Avis */}
-      <TestimonialsSection />
+      <TestimonialsSection home />
 
       {/* 10 — CTA final */}
       <BowlCta />
