@@ -94,13 +94,15 @@ const stickerTones = {
 export function Sticker({
   children,
   tone = "accent",
+  className = "",
 }: {
   children: React.ReactNode;
   tone?: "accent" | "primary" | "ink";
+  className?: string;
 }) {
   return (
     <p
-      className={`${eyebrowClassName} inline-block rotate-2 rounded-[4px] border-2 border-ink px-3.5 py-1.5 font-bold ${stickerTones[tone]}`}
+      className={`${eyebrowClassName} inline-block rotate-2 rounded-[4px] border-2 border-ink px-3.5 py-1.5 font-bold ${stickerTones[tone]} ${className}`}
     >
       {children}
     </p>
@@ -118,6 +120,7 @@ export function SectionHeading({
   underline = true,
   underlineClassName,
   sticker,
+  stickerClassName,
   className = "",
 }: {
   eyebrow: string;
@@ -132,6 +135,8 @@ export function SectionHeading({
   /** Colour of the "Souligné" mark, when it differs from the default (green, lime on dark). */
   underlineClassName?: string;
   sticker?: "accent" | "primary" | "ink";
+  /** Extra classes for the sticker (e.g. its green shadow on the navy podcast section). */
+  stickerClassName?: string;
   className?: string;
 }) {
   const titleClassName = poster
@@ -141,7 +146,9 @@ export function SectionHeading({
     : h2ClassName;
   return (
     <div className={`flex flex-col gap-4 ${center ? "items-center text-center" : "items-start"} ${className}`}>
-      <Sticker tone={sticker}>{eyebrow}</Sticker>
+      <Sticker tone={sticker} className={stickerClassName}>
+        {eyebrow}
+      </Sticker>
       <div className="relative">
         <h2 className={`${titleClassName} relative`}>{title}</h2>
         {underline && (

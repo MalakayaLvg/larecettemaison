@@ -46,7 +46,11 @@ export async function UpcomingSessions({ allDatesHref, slope = false }: { allDat
     >
       <div className={`${containerClassName} relative space-y-12`}>
         <div className="flex flex-wrap items-end justify-between gap-6">
-          <SectionHeading poster eyebrow="Où et quand ?" title="Prochaines sessions à Lyon" />
+          <SectionHeading
+            eyebrow="Où et quand ?"
+            title="Prochaines sessions à Lyon : à vos tabliers !"
+            className="max-w-[908px]"
+          />
           {allDatesHref && (
             <Link href={allDatesHref} className={`${darkButtonClassName}`}>
               Voir toutes les dates

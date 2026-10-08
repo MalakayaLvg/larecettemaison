@@ -28,7 +28,7 @@ const podcast: Field = {
   tone: "dark",
   number: "01",
   title: "Podcast",
-  text: "Un podcast grand public sur l'alimentation durable, qui part à la rencontre d'acteur·ices du changement et met en lumière des solutions.",
+  text: "Un podcast grand public sur l'alimentation durable, pour partir à la rencontre d'acteur·ices du changement et mettre des solutions concrètes sur la table.",
   cta: { href: "/podcast", label: "Écouter le podcast" },
   photo: podcastPhoto,
   photoAlt: "Deux femmes souriantes enregistrent un épisode du podcast face à leurs micros",
@@ -40,7 +40,7 @@ const others: Field[] = [
     tone: "brand",
     number: "02",
     title: "Studio",
-    text: "Un studio de production de podcasts qui aide les organisations engagées dans l'alimentation durable à faire entendre leur voix.",
+    text: "Un studio de production de podcasts qui donne de la voix aux organisations engagées dans l'alimentation durable.",
     cta: { href: "/devis", label: "Demander un devis" },
     photo: studioPhoto,
     photoAlt: "Intervenant au micro devant un public lors d'un grand entretien enregistré",
@@ -50,7 +50,7 @@ const others: Field[] = [
     tone: "light",
     number: "03",
     title: "Expériences",
-    text: "Des expériences impactantes (ateliers, immersions, séjours) qui fédèrent, engagent et sensibilisent à une meilleure alimentation.",
+    text: "Des expériences qui ont du goût (ateliers, immersions, séjours) pour fédérer, engager et sensibiliser à une meilleure alimentation.",
     cta: { href: "/experiences", label: "Découvrir nos expériences" },
     photo: experiencesPhoto,
     photoAlt: "Participant·es attablé·es lors d'un atelier collectif",
@@ -68,26 +68,12 @@ const cardClassNames = {
 export function ActionFields() {
   return (
     <section className={`${slopedSectionClassName} bg-brand-subtle`}>
-      <Image
-        src="/deco/rond-vert.svg"
-        alt=""
-        width={320}
-        height={320}
-        className="pointer-events-none absolute -top-[140px] -right-[90px] w-[200px] lg:w-[320px]"
-      />
-      <Image
-        src="/deco/legume-lime.svg"
-        alt=""
-        width={191}
-        height={220}
-        className="pointer-events-none absolute bottom-[calc(5vw-60px)] -left-[115px] w-[150px] rotate-8 lg:w-[191px]"
-      />
       <div className={`${containerClassName} relative space-y-12 lg:space-y-16`}>
-        <SectionHeading eyebrow="Maison La Recette" title="Champs d'action : podcast, studio et expériences" />
-        <div className="grid gap-8 xl:grid-cols-[980fr_748fr]">
+        <SectionHeading eyebrow="Maison La Recette" title="Passez à table, passez à l'action : podcast, studio et expériences" />
+        <div className="grid gap-8 2xl:grid-cols-[980fr_748fr]">
           <article className={`flex flex-col overflow-hidden border-2 border-ink ${cardClassNames[podcast.tone]}`}>
             <div className="relative h-64 sm:h-[440px]">
-              <FieldPhoto field={podcast} sizes="(min-width: 1280px) 51vw, 100vw" />
+              <FieldPhoto field={podcast} sizes="(min-width: 1536px) 51vw, 100vw" />
             </div>
             <FieldContent field={podcast} />
           </article>
@@ -98,7 +84,7 @@ export function ActionFields() {
                 className={`flex flex-col overflow-hidden border-2 border-ink sm:flex-row ${cardClassNames[field.tone]}`}
               >
                 <div className="relative h-64 shrink-0 sm:h-auto sm:w-[39%]">
-                  <FieldPhoto field={field} sizes="(min-width: 1280px) 15vw, (min-width: 640px) 39vw, 100vw" />
+                  <FieldPhoto field={field} sizes="(min-width: 1536px) 15vw, (min-width: 640px) 39vw, 100vw" />
                 </div>
                 <FieldContent field={field} />
               </article>

@@ -41,7 +41,11 @@ export default function HomePage() {
       <TestimonialsSection home />
 
       {/* 10 — CTA final */}
-      <BowlCta />
+      <BowlCta
+        theme="chou"
+        title="Un team building écoresponsable à Lyon : mettez vos équipes à la même table"
+        text="Team buildings, séminaires, afterworks, déjeuners : pour tous vos évènements d'entreprise, on met les petits plats dans les grands. Réponse à votre demande de devis en général sous 48 h."
+      />
     </>
   );
 }

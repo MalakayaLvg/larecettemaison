@@ -11,13 +11,21 @@ import {
 // - vert: home page (V4, node 186:318), flat tomato, star and hexagon;
 // - illustre: podcast pages (Fiche épisode V4, node 279:1688), drawn tomato and cabbage;
 // - lime: Studio page (node 279:1521), lime bowl, orange tomato and sticker;
-// - orange: Expériences page (node 279:1536), orange bowl, white text, lime button.
+// - orange: Expériences page (node 279:1536), orange bowl, white text, lime button;
+// - chou: home page (Accueil V4, node 359:3457), light green cabbage behind a tilted green bowl.
 const themes = {
   vert: { section: "bg-brand-subtle", bowl: "/deco/bol-cta.svg", tomato: null, sticker: "accent", onDark: false },
   illustre: { section: "bg-brand-subtle", bowl: "/deco/bol-cta.svg", tomato: "/deco/tomate-illustree.svg", sticker: "accent", onDark: false },
   lime: { section: "bg-accent-subtle", bowl: "/deco/bol-cta-lime.svg", tomato: "/deco/tomate-illustree-orange.svg", sticker: "primary", onDark: false },
   orange: { section: "bg-highlight-wash", bowl: "/deco/bol-cta-orange.svg", tomato: "/deco/tomate-illustree.svg", sticker: "accent", onDark: true },
 } as const;
+
+type CtaProps = {
+  eyebrow: string;
+  title: string;
+  text: string;
+  href: string;
+};
 
 // Figma "10 — CTA final": text inside the "bowl" shape of the logo, on a light band.
 // Decoration positions are percentages of the design box (1760×600, or 1760×540 for the lime
@@ -30,13 +38,14 @@ export function BowlCta({
   href = "/devis",
   poster = true,
 }: {
-  theme?: keyof typeof themes;
+  theme?: keyof typeof themes | "chou";
   eyebrow?: string;
   title?: string;
   text?: string;
   href?: string;
   poster?: boolean;
 }) {
+  if (theme === "chou") return <CabbageCta eyebrow={eyebrow} title={title} text={text} href={href} />;
   const style = themes[theme];
   const short = theme === "lime" || theme === "orange";
 
@@ -109,6 +118,46 @@ export function BowlCta({
           </Link>
         </div>
       </div>
+    </section>
+  );
+}
+
+// Home page version. The cabbage (public/illustrations/accueil-chou-cta.svg, Figma export of
+// "Group") sticks out 109px above the band, over the previous section; the bowl is cropped by
+// the bottom of the band. Positions are percentages of the 1760×600 design box.
+function CabbageCta({ eyebrow, title, text, href }: CtaProps) {
+  return (
+    <section className="relative overflow-x-clip bg-brand-subtle">
+      <div className={`${containerClassName} pt-24 lg:pt-[42px]`}>
+        <div className="relative flex flex-col items-center justify-end gap-8 px-6 pt-[40vw] pb-12 text-center sm:px-16 lg:min-h-[600px] lg:px-32 lg:pt-[130px] lg:pb-0">
+          <Image
+            src="/illustrations/accueil-chou-cta.svg"
+            alt=""
+            width={759}
+            height={729}
+            className="pointer-events-none absolute top-[-4rem] left-1/2 w-[70%] -translate-x-1/2 lg:top-[-25.23%] lg:left-[28.41%] lg:w-[43.13%] lg:translate-x-0"
+          />
+          {/* Small screens: plain bowl shape stretched behind the text. */}
+          <div
+            aria-hidden
+            className="absolute inset-x-0 top-[calc(40vw+3rem)] bottom-0 bg-brand [clip-path:polygon(0_0,100%_4%,90%_100%,10%_100%)] lg:hidden"
+          />
+          <Image
+            src="/deco/bol-cta-vert.svg"
+            alt=""
+            width={1160}
+            height={381}
+            className="pointer-events-none absolute top-[43.16%] left-[16.74%] w-[65.91%] max-lg:hidden"
+          />
+          <SectionHeading center underline={false} eyebrow={eyebrow} title={title} className="relative max-w-[1100px] gap-[42px]!" />
+          <p className="relative max-w-[720px] text-lg leading-[1.2] lg:text-[22px]">{text}</p>
+          <Link href={href} className={`${darkButtonClassName} relative`}>
+            Demander un devis
+          </Link>
+        </div>
+      </div>
+      {/* Room for the bottom of the bowl (42px at 1920px). */}
+      <div className="h-[2.2vw]" />
     </section>
   );
 }
