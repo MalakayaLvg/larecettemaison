@@ -55,14 +55,6 @@ export default async function PodcastPage(props: PageProps<"/podcast">) {
     <>
       {/* 02 — Hero. Positions in the visual are percentages of the 660×640 design box. */}
       <section className="relative overflow-hidden bg-brand">
-        <Image
-          src="/deco/legume.svg"
-          alt=""
-          width={208}
-          height={240}
-          className="pointer-events-none absolute bottom-[calc(5vw-40px)] -left-[75px] hidden w-[150px] -rotate-10 sm:block lg:w-[208px]"
-        />
-
         <div
           className={`${containerClassName} relative grid items-center gap-12 pt-12 pb-[calc(5vw+5rem)] lg:grid-cols-[1036fr_660fr] lg:gap-16 lg:pt-24 lg:pb-[calc(5vw+8rem)]`}
         >
@@ -122,6 +114,14 @@ export default async function PodcastPage(props: PageProps<"/podcast">) {
         </div>
 
         <SlopeCut color="vert-clair" />
+        {/* Figma "Déco — carotte": straddles the slanted cut, clipped by the section like on Studio. */}
+        <Image
+          src="/deco/carotte-lime.svg"
+          alt=""
+          width={118}
+          height={330}
+          className="pointer-events-none absolute -bottom-[162px] left-[53.4%] hidden w-[118px] -rotate-25 lg:block"
+        />
       </section>
 
       {/* 03 — Liste des épisodes */}
@@ -176,11 +176,11 @@ export default async function PodcastPage(props: PageProps<"/podcast">) {
       {/* 05 — Avis auditeurs */}
       <section className={slopedSectionClassName}>
         <Image
-          src="/deco/legume-lime.svg"
+          src="/deco/chou-vert.svg"
           alt=""
-          width={208}
-          height={240}
-          className="pointer-events-none absolute -top-[72px] -right-[30px] w-[160px] -rotate-12 lg:w-[208px]"
+          width={300}
+          height={288}
+          className="pointer-events-none absolute -top-[61px] -right-[60px] w-[180px] -rotate-12 lg:w-[300px]"
         />
         <div className={`${containerClassName} relative space-y-16`}>
           <SectionHeading eyebrow="Avis" title="Ce qu'en disent les auditeur·ices : des oreilles gourmandes" />
@@ -204,6 +204,7 @@ export default async function PodcastPage(props: PageProps<"/podcast">) {
 
       {/* 10 — CTA final */}
       <BowlCta
+        theme="illustre"
         poster={false}
         title="Un team building écoresponsable à Lyon : mettez vos équipes à la même table"
       />

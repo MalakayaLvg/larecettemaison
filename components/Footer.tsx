@@ -8,13 +8,6 @@ import { contactEmail, legalNav, mainNav, siteName, socialLinks } from "@/lib/si
 export function Footer() {
   return (
     <footer className="relative mt-auto overflow-hidden bg-ink text-white">
-      <Image
-        src="/deco/rond-vert.svg"
-        alt=""
-        width={240}
-        height={240}
-        className="pointer-events-none absolute -top-[120px] -right-[60px] w-[180px] lg:w-[240px]"
-      />
       <div className={`${containerClassName} relative space-y-16 pt-20 pb-8 lg:pt-24`}>
         <div className="grid gap-12 md:grid-cols-2 lg:grid-cols-3 lg:gap-24">
           <div className="space-y-6">
