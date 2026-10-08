@@ -1,10 +1,12 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import Link from "next/link";
 import { ArticleCard } from "@/components/ArticleCard";
-import { Section } from "@/components/home/Section";
-import { NewsletterForm } from "@/components/NewsletterForm";
+import { BowlCta } from "@/components/home/BowlCta";
+import { containerClassName, SlopeCut, slopedSectionClassName, Sticker } from "@/components/home/Section";
 import { getArticles } from "@/lib/articles";
 import { articleCategories, isArticleCategory } from "@/lib/site";
+import heroPhoto from "@/public/images/blog/hero.jpg";
 
 export const metadata: Metadata = {
   title: "Blog",
@@ -12,9 +14,8 @@ export const metadata: Metadata = {
     "Conseils, recettes et rencontres pour mieux manger : alimentation saine et durable, consommation responsable, produits locaux et de saison.",
 };
 
-// Layout and copy from the Figma wireframe "Blog — Desktop 1920" (node 14:276).
-
-const chipClassName = "block rounded-full px-4 py-2 font-medium";
+// Figma "Blog — UI Desktop 1920" (node 298:930). Header (01) and footer (05) are in the site
+// layout. Each section ends with a slanted cut in the colour of the next one.
 
 export default async function BlogPage(props: PageProps<"/blog">) {
   const { categorie } = await props.searchParams;
@@ -23,23 +24,59 @@ export default async function BlogPage(props: PageProps<"/blog">) {
 
   return (
     <>
-      {/* 02 — Hero */}
-      <section className="mx-auto max-w-3xl space-y-4 px-4 py-16 text-center sm:py-24">
-        <h1 className="text-4xl font-black tracking-tight sm:text-6xl sm:leading-[72px]">
-          Le blog de l&apos;alimentation durable
-        </h1>
-        <p className="text-lg opacity-80">
-          Conseils, recettes et rencontres pour mieux manger : alimentation saine et durable,
-          consommation responsable, produits locaux et de saison. Nos articles prolongent les épisodes
-          du podcast La Recette et les expériences culinaires à Lyon.
-        </p>
+      {/* 02 — Hero. Positions in the visual are percentages of the 660×640 design box. */}
+      <section className="relative overflow-hidden bg-brand">
+        <div
+          className={`${containerClassName} relative grid items-center gap-12 pt-12 pb-[calc(5vw+5rem)] lg:grid-cols-[1036fr_660fr] lg:gap-16 lg:pt-24 lg:pb-[calc(5vw+8rem)]`}
+        >
+          <div className="flex flex-col items-start gap-8">
+            <Sticker>Blog</Sticker>
+            <h1 className="font-display text-[clamp(2.75rem,5vw,6rem)] leading-[0.95] font-extrabold">
+              Le blog de l&apos;alimentation durable
+            </h1>
+            <p className="text-lg leading-[1.2] lg:text-[22px]">
+              Conseils, recettes et rencontres pour mieux manger : alimentation saine et durable,
+              consommation responsable, produits locaux et de saison. Nos articles prolongent les
+              épisodes du podcast La Recette et les expériences culinaires à Lyon.
+            </p>
+          </div>
+
+          <div className="relative mx-auto mt-[6%] aspect-[660/640] w-full max-w-[660px] lg:mt-0">
+            <div className="absolute -top-[5.6%] left-[9.1%] aspect-square w-[81.8%] rotate-4 overflow-hidden">
+              <Image
+                src={heroPhoto}
+                alt="Bocaux, épices et légumes de saison posés sur une table d'atelier"
+                priority
+                fill
+                sizes="(min-width: 1024px) 30vw, 80vw"
+                className="object-cover"
+              />
+            </div>
+            <Image
+              src="/deco/bol-podcast.svg"
+              alt=""
+              width={640}
+              height={206}
+              className="absolute top-[64.06%] left-0 w-[96.97%]"
+            />
+          </div>
+        </div>
+
+        <SlopeCut color="blanc" />
+        <Image
+          src="/deco/tomate-illustree.svg"
+          alt=""
+          width={229}
+          height={290}
+          className="pointer-events-none absolute -bottom-[90px] -left-8 hidden w-[150px] -rotate-10 sm:block lg:w-[229px]"
+        />
       </section>
 
       {/* 03 — Articles */}
-      <section id="articles" className="scroll-mt-8 bg-foreground/[0.04]">
-        <div className="mx-auto max-w-6xl space-y-12 px-4 py-16 sm:py-24">
+      <section id="articles" className={`${slopedSectionClassName} scroll-mt-8`}>
+        <div className={`${containerClassName} relative flex flex-col gap-14`}>
           <nav aria-label="Filtrer par catégorie">
-            <ul className="flex flex-wrap gap-3">
+            <ul className="flex flex-wrap gap-4">
               <CategoryChip href="/blog#articles" active={!selected}>
                 Tous les articles
               </CategoryChip>
@@ -52,9 +89,9 @@ export default async function BlogPage(props: PageProps<"/blog">) {
           </nav>
 
           {articles.length === 0 ? (
-            <p className="opacity-70">Aucun article pour le moment.</p>
+            <p className="text-lg">Aucun article pour le moment.</p>
           ) : (
-            <ul className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+            <ul className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
               {articles.map((article) => (
                 <li key={article.slug}>
                   <ArticleCard article={article} />
@@ -63,23 +100,20 @@ export default async function BlogPage(props: PageProps<"/blog">) {
             </ul>
           )}
         </div>
+        <SlopeCut color="vert-clair" />
       </section>
 
-      {/* 04 — Newsletter */}
-      <Section>
-        <div className="mx-auto max-w-xl space-y-8 text-center">
-          <h2 className="text-3xl font-black tracking-tight sm:text-[44px] sm:leading-[52px]">
-            Les ingrédients du changement, dans votre boîte mail
-          </h2>
-          <div className="text-left">
-            <NewsletterForm id="newsletter-blog" />
-          </div>
-        </div>
-      </Section>
+      {/* 10 — CTA final */}
+      <BowlCta
+        theme="illustre"
+        poster={false}
+        title="Un team building écoresponsable à Lyon : mettez vos équipes à la même table"
+      />
     </>
   );
 }
 
+// Figma "filter": navy pill when active, white otherwise.
 function CategoryChip({
   href,
   active,
@@ -95,8 +129,8 @@ function CategoryChip({
         href={href}
         scroll={false}
         aria-current={active ? "page" : undefined}
-        className={`${chipClassName} ${
-          active ? "bg-foreground text-background" : "bg-background hover:bg-foreground/10"
+        className={`block rounded-full border-2 border-ink px-6 py-2.5 text-lg leading-[1.4] font-semibold transition-colors ${
+          active ? "bg-ink text-white" : "bg-white hover:bg-ink hover:text-white"
         }`}
       >
         {children}

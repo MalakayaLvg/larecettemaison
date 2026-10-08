@@ -1,10 +1,11 @@
 import Image from "next/image";
 import Link from "next/link";
+import { darkButtonClassName } from "@/components/home/Section";
 import { type EpisodeListItem, episodeHref, formatDuration } from "@/lib/episodes";
 
 // Figma "Card" of "03 — Liste des épisodes" (Podcast V4, node 243:184): white card, navy border
-// and cut-out shadow.
-export function EpisodeCard({ episode }: { episode: EpisodeListItem }) {
+// and cut-out shadow. `cta` adds the "En savoir plus" button of the episode page's "Autres épisodes".
+export function EpisodeCard({ episode, cta }: { episode: EpisodeListItem; cta?: string }) {
   const duration = formatDuration(episode.durationSeconds);
 
   return (
@@ -26,13 +27,18 @@ export function EpisodeCard({ episode }: { episode: EpisodeListItem }) {
       </div>
       <div className="flex flex-1 flex-col gap-3 p-6">
         <h3 className="font-display text-2xl leading-[1.25] font-bold group-hover:underline">{episode.title}</h3>
-        <p className="mt-auto text-lg leading-[1.4] font-semibold text-ink-soft">
+        <p className={`text-lg leading-[1.4] font-semibold text-ink-soft ${cta ? "" : "mt-auto"}`}>
           Saison {episode.season}
           {duration && ` · ${duration}`} ·{" "}
           <time dateTime={episode.publishedAt}>
             {new Date(episode.publishedAt).toLocaleDateString("fr-FR")}
           </time>
         </p>
+        {cta && (
+          <span className="mt-auto pt-6">
+            <span className={darkButtonClassName}>{cta}</span>
+          </span>
+        )}
       </div>
     </Link>
   );

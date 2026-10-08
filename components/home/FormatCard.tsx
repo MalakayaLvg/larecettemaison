@@ -1,9 +1,11 @@
 import Link from "next/link";
 import Image from "next/image";
-import { cardClassName, ghostButtonClassName } from "@/components/home/Section";
+import { darkButtonClassName } from "@/components/home/Section";
 import type { experienceFormats } from "@/lib/content";
 
 // One of the three experience formats, linking to the list of experiences of that type.
+// Figma "Carte — Ateliers de cuisine" (Fiche épisode V4, node 260:230): white card with the
+// cut-out shadow and a tilted lime price sticker.
 export function FormatCard({
   format,
   title,
@@ -14,22 +16,30 @@ export function FormatCard({
   cta?: string;
 }) {
   return (
-    <Link href={`/experiences/${format.type}`} className={`${cardClassName} group`}>
-      <div className="relative h-64 lg:h-80">
+    <Link
+      href={`/experiences/${format.type}`}
+      className="group flex h-full flex-col overflow-hidden border-2 border-ink bg-white shadow-cut transition-transform hover:-translate-y-1"
+    >
+      <div className="relative h-64 overflow-hidden lg:h-[380px]">
         <Image
           src={format.photo}
           alt={format.photoAlt}
           fill
           sizes="(min-width: 768px) 33vw, 100vw"
-          className="object-cover"
+          className="object-cover transition-transform duration-300 group-hover:scale-105"
           style={{ objectPosition: format.photoPosition }}
         />
       </div>
-      <div className="flex flex-1 flex-col gap-3 px-6 pt-3 pb-6">
-        <h3 className="text-2xl font-black group-hover:underline">{title}</h3>
-        <p className="flex-1 opacity-80">{format.text}</p>
-        <p className="text-lg font-bold">{format.price}</p>
-        {cta && <span className={`${ghostButtonClassName} self-start`}>{cta}</span>}
+      <div className="flex flex-1 flex-col gap-4 p-6 lg:p-8">
+        <h3 className="font-display text-2xl leading-[1.25] font-bold group-hover:underline">{title}</h3>
+        <p className="text-lg leading-[1.55] text-ink-soft">{format.text}</p>
+        <div className="mt-auto flex flex-col items-start gap-6 pt-6">
+          {/* Figma "Prix" sticker */}
+          <p className="rotate-2 rounded-[4px] border-2 border-ink bg-accent px-4 py-2 text-lg leading-[1.4] font-semibold">
+            {format.price}
+          </p>
+          {cta && <span className={darkButtonClassName}>{cta}</span>}
+        </div>
       </div>
     </Link>
   );

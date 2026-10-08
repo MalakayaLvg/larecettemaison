@@ -3,7 +3,7 @@
 import { useActionState } from "react";
 import { subscribeNewsletter, type NewsletterFormState } from "@/app/(site)/newsletter/actions";
 import { HoneypotField } from "@/components/forms/fields";
-import { accentButtonClassName, buttonClassName } from "@/components/home/Section";
+import { accentOnNavyButtonClassName, buttonClassName } from "@/components/home/Section";
 
 const initialState: NewsletterFormState = { status: "idle" };
 
@@ -51,7 +51,7 @@ export function NewsletterForm({
         <button
           type="submit"
           disabled={pending}
-          className={`${tone === "dark" ? accentButtonClassName : buttonClassName} disabled:opacity-50`}
+          className={`${tone === "dark" ? accentOnNavyButtonClassName : buttonClassName} disabled:opacity-50`}
         >
           {pending ? "…" : "S'inscrire"}
         </button>

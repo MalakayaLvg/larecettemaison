@@ -11,6 +11,7 @@ export const metadata: Metadata = {
 export default function ContactPage() {
   return (
     <FormHero
+      eyebrow="Contact"
       title="Contact"
       intro="Une question, une idée d'invité·e pour le podcast, une envie de collaborer ? Écrivez-nous, nous vous répondons très vite."
       otherLink={{ href: "/devis", label: "Pour une prestation (entreprise, groupe), demandez plutôt un devis" }}

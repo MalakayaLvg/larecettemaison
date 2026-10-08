@@ -2,6 +2,7 @@
 
 import { useActionState } from "react";
 import {
+  FormSuccess,
   HoneypotField,
   SelectField,
   SubmitButton,
@@ -30,12 +31,9 @@ export function QuoteForm({
 
   if (state.status === "success") {
     return (
-      <div role="status" className="rounded-lg border border-black/10 p-6">
-        <h2 className="font-semibold">Merci, votre demande est bien envoyée !</h2>
-        <p className="mt-2 opacity-80">
-          Vous allez recevoir un e-mail de confirmation. Nous revenons vers vous sous 48 h.
-        </p>
-      </div>
+      <FormSuccess title="Merci, votre demande est bien envoyée !">
+        Vous allez recevoir un e-mail de confirmation. Nous revenons vers vous sous 48 h.
+      </FormSuccess>
     );
   }
 
@@ -43,20 +41,20 @@ export function QuoteForm({
   const values = state.status === "error" ? state.values : { service: defaultService };
 
   return (
-    <form action={formAction} noValidate className="relative grid gap-5 sm:grid-cols-2">
+    <form action={formAction} noValidate className="relative grid gap-6 sm:grid-cols-2">
       {state.status === "error" && (
-        <p role="alert" className="text-sm text-red-600 sm:col-span-2">
+        <p role="alert" className="text-lg font-semibold text-red-700 sm:col-span-2">
           Merci de corriger les champs indiqués.
         </p>
       )}
 
       <TextField name="company" label="Entreprise" required autoComplete="organization" defaultValue={values.company} error={errors.company} />
-      <TextField name="contactName" label="Nom et prénom" required autoComplete="name" defaultValue={values.contactName} error={errors.contactName} />
+      <TextField name="contactName" label="Nom" required autoComplete="name" defaultValue={values.contactName} error={errors.contactName} />
       <TextField name="jobTitle" label="Fonction" autoComplete="organization-title" defaultValue={values.jobTitle} error={errors.jobTitle} />
-      <TextField name="email" label="E-mail" type="email" required autoComplete="email" defaultValue={values.email} error={errors.email} />
+      <TextField name="email" label="Email" type="email" required autoComplete="email" defaultValue={values.email} error={errors.email} />
       <TextField name="phone" label="Téléphone" type="tel" required autoComplete="tel" defaultValue={values.phone} error={errors.phone} />
 
-      <SelectField name="service" label="Prestation souhaitée" required defaultValue={values.service} error={errors.service}>
+      <SelectField name="service" label="Type de prestation" required defaultValue={values.service} error={errors.service}>
         <option value="" disabled>
           Choisir…
         </option>
@@ -75,7 +73,7 @@ export function QuoteForm({
       {groupFields && (
         <TextField name="participants" label="Nombre de participants" type="number" defaultValue={values.participants} error={errors.participants} />
       )}
-      <TextField name="desiredDate" label="Date souhaitée" hint="Une date précise ou une période." defaultValue={values.desiredDate} error={errors.desiredDate} />
+      <TextField name="desiredDate" label="Date / période" defaultValue={values.desiredDate} error={errors.desiredDate} />
 
       {groupFields && (
         <SelectField name="location" label="Lieu" defaultValue={values.location} error={errors.location}>
@@ -89,7 +87,7 @@ export function QuoteForm({
       )}
       <TextField name="budget" label="Budget" defaultValue={values.budget} error={errors.budget} />
 
-      <TextAreaField name="message" label="Votre projet" className="sm:col-span-2" defaultValue={values.message} error={errors.message} />
+      <TextAreaField name="message" label="Message" className="sm:col-span-2" defaultValue={values.message} error={errors.message} />
 
       <HoneypotField />
       <div className="sm:col-span-2">

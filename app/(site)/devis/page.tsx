@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { FormHero } from "@/components/home/FormHero";
-import { Section } from "@/components/home/Section";
+import { containerClassName, SectionHeading } from "@/components/home/Section";
 import { Steps } from "@/components/home/Steps";
 import { getQuoteServices } from "@/lib/quote-services";
 import { QuoteForm } from "./QuoteForm";
@@ -10,7 +10,8 @@ export const metadata: Metadata = {
   description: "Demande de devis pour une expérience ou une prestation Studio.",
 };
 
-// Layout and copy from the Figma wireframe "Contact / Devis — Desktop 1920" (node 14:583).
+// Figma "Contact / Devis — UI Desktop 1920" (node 309:610). Header (01) and footer (04) are in
+// the site layout.
 
 const steps = [
   {
@@ -37,8 +38,10 @@ export default async function QuotePage(props: PageProps<"/devis">) {
     <>
       {/* 02 — Devis B2B */}
       <FormHero
+        eyebrow="Contact / Devis"
         title="Contact et demande de devis à Lyon"
-        intro="Je propose d'abord un rendez-vous téléphonique pour préciser la demande, puis j'envoie une proposition de devis. Je réponds en général sous 48 h."
+        intro="Parlons de votre projet ! Je propose d'abord un rendez-vous téléphonique pour préciser la demande, puis j'envoie une proposition de devis. Je réponds en général sous 48 h."
+        slope="blanc"
         otherLink={{ href: "/contact", label: "Une question, une idée d'invité·e ? Écrivez-nous" }}
         cardTitle="Demander un devis"
         note="* Champs obligatoires. Je vous rappelle pour préciser la demande, en général sous 48 h."
@@ -47,9 +50,12 @@ export default async function QuotePage(props: PageProps<"/devis">) {
       </FormHero>
 
       {/* 03 — Déroulé */}
-      <Section title="Comment se passe votre demande de devis ?">
-        <Steps items={steps} />
-      </Section>
+      <section className="pt-20 pb-20 lg:pt-32 lg:pb-32">
+        <div className={`${containerClassName} flex flex-col gap-14`}>
+          <SectionHeading eyebrow="Déroulé" title="Comment se passe votre demande de devis ?" />
+          <Steps items={steps} />
+        </div>
+      </section>
     </>
   );
 }

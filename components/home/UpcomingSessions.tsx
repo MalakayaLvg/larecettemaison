@@ -7,7 +7,8 @@ import { experienceHref, getHomeExperiences } from "@/lib/experiences";
 type Row = { key: string; href: string; heading: string; details: string };
 
 // Next bookable sessions; without any, the most recent experiences (as before online booking).
-async function getRows(): Promise<Row[]> {
+// Also used by the Expériences page, which lays them out in columns.
+export async function getSessionRows(): Promise<Row[]> {
   const sessions = await getUpcomingSessions(3);
   if (sessions.length > 0) {
     return sessions.map(({ id, startsAt, remaining, experience }) => ({
@@ -36,7 +37,7 @@ async function getRows(): Promise<Row[]> {
 // Figma "06 — Prochaines sessions" (V4, node 186:225): one card per session, linking to its
 // booking form. Hidden while there is nothing to show. `slope` adds the navy cut of the home page.
 export async function UpcomingSessions({ allDatesHref, slope = false }: { allDatesHref?: string; slope?: boolean }) {
-  const rows = await getRows();
+  const rows = await getSessionRows();
   if (rows.length === 0) return null;
 
   return (

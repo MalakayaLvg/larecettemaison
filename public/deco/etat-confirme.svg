@@ -1,0 +1,20 @@
+<svg preserveAspectRatio="none" overflow="visible" style="display: block;" width="660" height="640" viewBox="0 0 660 640" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g id="Visuel hero">
+<g id="D&#195;&#169;co &#226;&#128;&#148; rond confirmation" filter="url(#filter0_d_0_19)">
+<circle cx="330" cy="230" r="190" fill="#CFD600"/>
+<circle cx="330" cy="230" r="189" stroke="#262E3B" stroke-width="2"/>
+</g>
+<path id="Forme &#226;&#128;&#148; bol (logo)" d="M0 469.667C21.0473 510.626 42.0945 551.656 63.2099 592.615C114.364 600.41 165.517 608.205 216.603 616C313.325 608.843 410.115 601.756 506.837 594.599C546.411 570.222 586.054 545.845 625.628 521.468C630.396 484.336 635.164 447.132 640 410C426.667 429.913 213.333 449.825 0 469.738V469.667Z" fill="#CFD600"/>
+<path id="Coche" d="M255 235L305 285L405 175" stroke-width="26" stroke-linecap="round" stroke-linejoin="round" stroke="#262E3B"/>
+</g>
+<defs>
+<filter id="filter0_d_0_19" x="140" y="40" width="388" height="388" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+<feFlood flood-opacity="0" result="BackgroundImageFix"/>
+<feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/>
+<feOffset dx="8" dy="8"/>
+<feColorMatrix type="matrix" values="0 0 0 0 0.14902 0 0 0 0 0.180392 0 0 0 0 0.231373 0 0 0 1 0"/>
+<feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow_0_19"/>
+<feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow_0_19" result="shape"/>
+</filter>
+</defs>
+</svg>

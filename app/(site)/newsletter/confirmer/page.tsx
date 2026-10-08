@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { PageIntro } from "@/components/PageIntro";
+import { StateHero } from "@/components/StateHero";
 import { confirmationStatus } from "@/lib/newsletter";
 import { confirmNewsletter } from "../actions";
 import { TokenActionForm } from "../TokenActionForm";
@@ -10,7 +10,7 @@ export const metadata: Metadata = {
 };
 
 const messages = {
-  done: "C'est confirmé, bienvenue ! Vous recevrez nos prochaines nouvelles par e-mail.",
+  done: "C'est confirmé, bienvenue ! Vous recevrez nos prochaines nouvelles par email.",
   expired:
     "Ce lien a expiré. Réinscrivez-vous depuis le bas de n'importe quelle page pour en recevoir un nouveau.",
   invalid: "Ce lien n'est pas valide. Vérifiez qu'il a été copié en entier.",
@@ -22,7 +22,7 @@ export default async function ConfirmNewsletterPage(props: PageProps<"/newslette
   const status = await confirmationStatus(value);
 
   return (
-    <PageIntro title="Newsletter">
+    <StateHero eyebrow="Newsletter" title="Confirmer votre inscription">
       {status === "valid" ? (
         <TokenActionForm
           intro="Il ne reste qu'une étape pour recevoir la newsletter."
@@ -32,8 +32,8 @@ export default async function ConfirmNewsletterPage(props: PageProps<"/newslette
           messages={messages}
         />
       ) : (
-        <p>{messages[status]}</p>
+        <p className="text-lg leading-[1.2] lg:text-[22px]">{messages[status]}</p>
       )}
-    </PageIntro>
+    </StateHero>
   );
 }

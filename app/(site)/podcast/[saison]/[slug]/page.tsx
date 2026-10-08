@@ -2,11 +2,21 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { AudioPlayer } from "@/components/AudioPlayer";
 import { EpisodeCard } from "@/components/EpisodeCard";
+import { BowlCta } from "@/components/home/BowlCta";
 import { FormatCard } from "@/components/home/FormatCard";
-import { Placeholder } from "@/components/home/Placeholder";
-import { buttonClassName, cardClassName, Section } from "@/components/home/Section";
-import { NewsletterForm } from "@/components/NewsletterForm";
+import {
+  accentButtonClassName,
+  buttonClassName,
+  containerClassName,
+  darkButtonClassName,
+  eyebrowClassName,
+  SectionHeading,
+  SlopeCut,
+  slopedSectionClassName,
+  Sticker,
+} from "@/components/home/Section";
 import { experienceFormats } from "@/lib/content";
 import { cleanRssDescription, toExcerpt } from "@/lib/episode-description";
 import {
@@ -15,10 +25,10 @@ import {
   getOtherEpisodes,
   parseSeasonSegment,
 } from "@/lib/episodes";
-import { proseClassName } from "@/lib/prose";
 import { podcastPlatforms } from "@/lib/site";
 
-// Layout from the Figma wireframe "Fiche épisode — Desktop 1920" (node 1:463).
+// Figma "Fiche épisode — UI Desktop 1920" (node 242:340). Header (01) and footer (07) are in the
+// site layout. Each section ends with a slanted cut in the colour of the next one.
 
 type Props = PageProps<"/podcast/[saison]/[slug]">;
 
@@ -48,7 +58,8 @@ export async function generateMetadata(props: Props): Promise<Metadata> {
   };
 }
 
-const chipClassName = "block rounded-full bg-foreground/[0.06] px-4 py-2 font-medium hover:bg-foreground/10";
+// Figma "Méta": lime label like the eyebrow sticker, without the tilt.
+const metaClassName = `${eyebrowClassName} rounded-[4px] border-2 border-ink bg-accent px-3.5 py-1.5 font-bold`;
 
 const shortDate = (date: string) => new Date(date).toLocaleDateString("fr-FR");
 
@@ -67,35 +78,51 @@ export default async function EpisodePage(props: Props) {
     label: link.label,
     href: link.href || podcastPlatforms.find((platform) => platform.label === link.label)!.href,
   }));
-  const guestPhoto = typeof episode.guestPhoto === "object" ? episode.guestPhoto : null;
   const extracts = episode.extracts ?? [];
 
   return (
     <>
-      {/* 02 — Lecteur */}
-      <section className="bg-foreground/[0.04]">
-        <div className="mx-auto grid max-w-6xl items-start gap-12 px-4 py-16 sm:py-24 lg:grid-cols-[1.2fr_1fr]">
-          <div className="space-y-8">
-            <div className="space-y-4">
-              <p className="font-medium opacity-70">
-                <Link href="/podcast" className="hover:underline">
-                  Podcast
-                </Link>{" "}
-                · Saison {episode.season}
-                {episode.number && ` · Épisode ${episode.number}`}
-              </p>
-              <h1 className="text-3xl font-black tracking-tight sm:text-5xl sm:leading-[60px]">{episode.title}</h1>
-              <EpisodeDescription summary={episode.summary} rssDescription={episode.rssDescription} />
-            </div>
-            <p className="flex gap-6 font-medium opacity-70">
-              {duration && <span>{duration}</span>}
-              <time dateTime={episode.publishedAt}>{shortDate(episode.publishedAt)}</time>
+      {/* 02 — Lecteur. Positions in the visual are percentages of the 660×640 design box. */}
+      <section className="relative overflow-hidden bg-brand">
+        <Image
+          src="/deco/tomate-illustree.svg"
+          alt=""
+          width={316}
+          height={400}
+          className="pointer-events-none absolute -top-[150px] -right-[88px] hidden w-[200px] -rotate-15 sm:block lg:w-[316px]"
+        />
+
+        <div
+          className={`${containerClassName} relative grid items-start gap-16 pt-12 pb-[calc(5vw+5rem)] lg:grid-cols-[1004fr_660fr] lg:gap-24 lg:pt-24 lg:pb-[calc(5vw+8rem)]`}
+        >
+          <div className="flex flex-col items-start gap-7">
+            <Sticker>
+              <Link href="/podcast" className="hover:underline">
+                Podcast
+              </Link>{" "}
+              · Saison {episode.season}
+              {episode.number && ` · Épisode ${episode.number}`}
+            </Sticker>
+            <h1 className="font-display text-[clamp(2.5rem,3.75vw,4.5rem)] leading-[0.95] font-extrabold">
+              {episode.title}
+            </h1>
+            <p className="flex flex-wrap gap-4">
+              {duration && <span className={metaClassName}>{duration}</span>}
+              <time dateTime={episode.publishedAt} className={metaClassName}>
+                {shortDate(episode.publishedAt)}
+              </time>
             </p>
+            <EpisodeDescription summary={episode.summary} rssDescription={episode.rssDescription} />
             <nav aria-label="Écouter sur">
               <ul className="flex flex-wrap gap-3">
                 {platforms.map((platform) => (
                   <li key={platform.label}>
-                    <a href={platform.href} target="_blank" rel="noopener noreferrer" className={chipClassName}>
+                    <a
+                      href={platform.href}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className={darkButtonClassName}
+                    >
                       {platform.label}
                     </a>
                   </li>
@@ -104,116 +131,115 @@ export default async function EpisodePage(props: Props) {
             </nav>
           </div>
 
-          <div className="space-y-4 lg:sticky lg:top-8">
-            <div className="relative aspect-square overflow-hidden rounded bg-foreground/10">
-              {episode.imageUrl && (
-                <Image
-                  src={episode.imageUrl}
-                  alt=""
-                  fill
-                  priority
-                  sizes="(min-width: 1024px) 440px, 100vw"
-                  className="object-cover"
-                />
-              )}
+          <div className="mx-auto flex w-full max-w-[660px] flex-col gap-6 lg:sticky lg:top-8">
+            <div className="relative mt-[12%] aspect-[660/640] w-full lg:mt-0">
+              <div className="absolute -top-[11.5%] left-[6.1%] aspect-square w-[81.8%] -rotate-[4.05deg] overflow-hidden bg-brand-subtle">
+                {episode.imageUrl && (
+                  <Image
+                    src={episode.imageUrl}
+                    alt=""
+                    fill
+                    priority
+                    sizes="(min-width: 1024px) 30vw, 80vw"
+                    className="object-cover"
+                  />
+                )}
+              </div>
+              <Image
+                src="/deco/bol-podcast.svg"
+                alt=""
+                width={640}
+                height={206}
+                className="absolute top-[64.06%] left-0 w-[96.97%]"
+              />
             </div>
-            <audio controls preload="none" src={episode.audioUrl} className="w-full">
-              <a href={episode.audioUrl}>Télécharger l&apos;épisode</a>
-            </audio>
+            <AudioPlayer src={episode.audioUrl} title={episode.title} />
           </div>
         </div>
+
+        <SlopeCut color={extracts.length > 0 ? "vert-clair" : "blanc"} />
       </section>
 
-      {/* 03 — Invité·e */}
-      {episode.guestName && episode.guestBio && (
-        <Section>
-          <div className="grid items-center gap-12 lg:grid-cols-2">
-            {guestPhoto?.url ? (
-              <div className="relative h-80 overflow-hidden rounded lg:h-[480px]">
-                <Image
-                  src={guestPhoto.url}
-                  alt={guestPhoto.alt}
-                  fill
-                  sizes="(min-width: 1024px) 50vw, 100vw"
-                  className="object-cover"
-                />
-              </div>
-            ) : (
-              <Placeholder label={`Image — Portrait de ${episode.guestName}`} className="h-80 lg:h-[480px]" />
-            )}
-            <div className="space-y-4">
-              <h2 className="text-3xl font-black tracking-tight sm:text-[44px] sm:leading-[52px]">
-                Qui est {episode.guestName}
-                {episode.guestRole && `, ${episode.guestRole}`} ?
-              </h2>
-              <p className="whitespace-pre-line text-lg opacity-80">{episode.guestBio}</p>
-            </div>
-          </div>
-        </Section>
-      )}
-
-      {/* 04 — Extraits */}
+      {/* 03 — Extraits */}
       {extracts.length > 0 && (
-        <Section muted title="Les extraits de l'épisode">
-          <ul className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-            {extracts.map((extract) => {
-              const extractDuration = formatDuration(extract.durationSeconds);
-              return (
-                <li key={extract.guid} className={`${cardClassName} gap-3 p-6`}>
-                  <h3 className="text-xl font-black leading-snug">
-                    {extract.number ? `Extrait ${extract.number} : ` : ""}
-                    {extract.title}
-                  </h3>
-                  <p className="flex-1 font-medium opacity-70">
-                    {extractDuration && `${extractDuration} · `}
-                    <time dateTime={extract.publishedAt}>{shortDate(extract.publishedAt)}</time>
-                  </p>
-                  <audio controls preload="none" src={extract.audioUrl} className="w-full" />
-                </li>
-              );
-            })}
-          </ul>
-        </Section>
+        <section className={`${slopedSectionClassName} bg-brand-subtle`}>
+          <div className={`${containerClassName} relative flex flex-col gap-12`}>
+            <SectionHeading eyebrow="Extraits" title="Les extraits de l'épisode, pour se mettre en bouche" />
+            <ul className="grid gap-8 md:grid-cols-2 xl:grid-cols-3">
+              {extracts.map((extract) => {
+                const extractDuration = formatDuration(extract.durationSeconds);
+                const extractTitle = `${extract.number ? `Extrait ${extract.number} : ` : ""}${extract.title}`;
+                return (
+                  <li
+                    key={extract.guid}
+                    className="flex flex-col gap-4 border-2 border-ink bg-white p-6 shadow-cut lg:p-8"
+                  >
+                    <h3 className="font-display text-2xl leading-[1.25] font-bold">{extractTitle}</h3>
+                    <p className="flex-1 text-lg leading-[1.4] font-semibold text-ink-soft">
+                      {extractDuration && `${extractDuration} · `}
+                      <time dateTime={extract.publishedAt}>{shortDate(extract.publishedAt)}</time>
+                    </p>
+                    <AudioPlayer src={extract.audioUrl} title={extractTitle} />
+                  </li>
+                );
+              })}
+            </ul>
+          </div>
+          <SlopeCut color="blanc" />
+        </section>
       )}
 
-      {/* 05 — De l'écoute à l'assiette */}
-      <Section eyebrow="Les expériences" title="De l'écoute à l'assiette : vivez nos expériences à Lyon">
-        <div className="grid gap-6 md:grid-cols-3">
-          {experienceFormats.map((format) => (
-            <FormatCard key={format.type} format={format} title={format.longTitle} />
-          ))}
-        </div>
-        <div className="mt-12">
+      {/* 04 — De l'écoute à l'assiette */}
+      <section className={slopedSectionClassName}>
+        <div className={`${containerClassName} relative flex flex-col items-start gap-12`}>
+          <SectionHeading
+            eyebrow="Les expériences"
+            title="De l'écoute à l'assiette : vivez nos expériences à Lyon"
+          />
+          <ul className="grid w-full gap-8 md:grid-cols-3">
+            {experienceFormats.map((format) => (
+              <li key={format.type}>
+                <FormatCard format={format} title={format.longTitle} />
+              </li>
+            ))}
+          </ul>
           <Link href="/devis" className={buttonClassName}>
             Demander un devis
           </Link>
         </div>
-      </Section>
+        <SlopeCut color={otherEpisodes.length > 0 ? "vert" : "vert-clair"} />
+      </section>
 
-      {/* 06 — Autres épisodes */}
+      {/* 05 — Autres épisodes */}
       {otherEpisodes.length > 0 && (
-        <Section muted title="D'autres épisodes du podcast La Recette à écouter">
-          <ul className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-            {otherEpisodes.map((other) => (
-              <li key={other.slug}>
-                <EpisodeCard episode={other} />
-              </li>
-            ))}
-          </ul>
-        </Section>
+        <section className={`${slopedSectionClassName} bg-brand`}>
+          <div className={`${containerClassName} relative flex flex-col items-start gap-12`}>
+            <SectionHeading
+              onDark
+              eyebrow="Le podcast"
+              title="Encore faim ? D'autres épisodes du podcast La Recette à écouter"
+            />
+            <ul className="grid w-full gap-8 sm:grid-cols-2 lg:grid-cols-3">
+              {otherEpisodes.map((other) => (
+                <li key={other.slug}>
+                  <EpisodeCard episode={other} cta="En savoir plus" />
+                </li>
+              ))}
+            </ul>
+            <Link href="/podcast" className={accentButtonClassName}>
+              Voir tous les épisodes
+            </Link>
+          </div>
+          <SlopeCut color="vert-clair" />
+        </section>
       )}
 
-      {/* 07 — Newsletter */}
-      <Section>
-        <div className="mx-auto max-w-xl space-y-8 text-center">
-          <h2 className="text-3xl font-black tracking-tight sm:text-[44px] sm:leading-[52px]">
-            Les ingrédients du changement, dans votre boîte mail
-          </h2>
-          <div className="text-left">
-            <NewsletterForm id="newsletter-episode" />
-          </div>
-        </div>
-      </Section>
+      {/* 10 — CTA final */}
+      <BowlCta
+        theme="illustre"
+        poster={false}
+        title="Un team building écoresponsable à Lyon : mettez vos équipes à la même table"
+      />
     </>
   );
 }
@@ -227,7 +253,10 @@ function EpisodeDescription({
   summary?: string | null;
   rssDescription?: string | null;
 }) {
-  const className = `text-lg opacity-80 ${proseClassName}`;
+  // Figma: Nunito Medium 22px, 16px between paragraphs. Child elements are styled from the
+  // container since the Ausha HTML isn't ours (see lib/prose.ts).
+  const className =
+    "space-y-4 text-lg leading-[1.2] font-medium lg:text-[22px] [&_a]:underline [&_li]:mt-1 [&_ol]:list-decimal [&_ol]:pl-5 [&_ul]:list-disc [&_ul]:pl-5";
   if (summary) {
     return (
       <div className={className}>

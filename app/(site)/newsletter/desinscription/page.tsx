@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { PageIntro } from "@/components/PageIntro";
+import { StateHero } from "@/components/StateHero";
 import { unsubscribeStatus } from "@/lib/newsletter";
 import { unsubscribeNewsletter } from "../actions";
 import { TokenActionForm } from "../TokenActionForm";
@@ -21,7 +21,7 @@ export default async function UnsubscribePage(props: PageProps<"/newsletter/desi
   const status = await unsubscribeStatus(value);
 
   return (
-    <PageIntro title="Newsletter">
+    <StateHero eyebrow="Newsletter" title="Se désinscrire de la newsletter">
       {status === "valid" ? (
         <TokenActionForm
           intro="Vous ne souhaitez plus recevoir la newsletter ?"
@@ -31,8 +31,8 @@ export default async function UnsubscribePage(props: PageProps<"/newsletter/desi
           messages={messages}
         />
       ) : (
-        <p>{messages[status]}</p>
+        <p className="text-lg leading-[1.2] lg:text-[22px]">{messages[status]}</p>
       )}
-    </PageIntro>
+    </StateHero>
   );
 }

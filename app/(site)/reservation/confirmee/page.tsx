@@ -1,11 +1,11 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { eyebrowClassName, ghostButtonClassName, outlineButtonClassName } from "@/components/home/Section";
+import { accentButtonClassName, darkButtonClassName } from "@/components/home/Section";
+import { StateHero } from "@/components/StateHero";
 import { confirmBooking } from "@/lib/bookings";
 import { getStripe } from "@/lib/stripe";
 
-// Stripe Checkout's success_url. Layout from the Figma state "Confirmation de réservation"
-// (node 80:1887).
+// Stripe Checkout's success_url. Figma "États — Confirmation de réservation" (V4, node 310:1403).
 
 export const metadata: Metadata = {
   title: "Réservation confirmée",
@@ -25,12 +25,12 @@ async function bookingStatus(checkoutId: string) {
 
 const messages = {
   paid: {
-    title: "Merci, votre réservation est confirmée",
-    text: "Vous allez recevoir un e-mail avec le récapitulatif, le lieu et les conditions d'annulation.",
+    title: "Merci, votre réservation est confirmée : à très vite à table",
+    text: "Vous allez recevoir un email avec le récapitulatif, le lieu et les conditions d'annulation.",
   },
   processing: {
     title: "Merci, votre paiement est en cours de traitement",
-    text: "Vous recevrez un e-mail de confirmation dès qu'il sera validé.",
+    text: "Vous recevrez un email de confirmation dès qu'il sera validé.",
   },
   invalid: {
     title: "Réservation introuvable",
@@ -44,18 +44,15 @@ export default async function BookingConfirmedPage(props: PageProps<"/reservatio
   const message = messages[status];
 
   return (
-    <section className="mx-auto max-w-3xl space-y-6 px-4 py-24 text-center">
-      <p className={eyebrowClassName}>Réservation</p>
-      <h1 className="text-4xl font-black tracking-tight sm:text-6xl sm:leading-[72px]">{message.title}</h1>
-      <p className="text-lg opacity-80">{message.text}</p>
-      <div className="flex flex-wrap justify-center gap-4 pt-2">
-        <Link href="/podcast" className={outlineButtonClassName}>
+    <StateHero eyebrow="Réservation" title={message.title} text={message.text} success={status !== "invalid"}>
+      <div className="flex flex-wrap gap-4">
+        <Link href="/podcast" className={darkButtonClassName}>
           Écouter le podcast
         </Link>
-        <Link href={status === "invalid" ? "/contact" : "/experiences"} className={ghostButtonClassName}>
+        <Link href={status === "invalid" ? "/contact" : "/experiences"} className={accentButtonClassName}>
           {status === "invalid" ? "Nous contacter" : "Voir les autres expériences"}
         </Link>
       </div>
-    </section>
+    </StateHero>
   );
 }

@@ -1,7 +1,7 @@
 "use client";
 
 import { useActionState } from "react";
-import { HoneypotField, SubmitButton, TextAreaField, TextField } from "@/components/forms/fields";
+import { FormSuccess, HoneypotField, SubmitButton, TextAreaField, TextField } from "@/components/forms/fields";
 import { type ContactFormState, submitContact } from "./actions";
 
 const initialState: ContactFormState = { status: "idle" };
@@ -11,12 +11,9 @@ export function ContactForm() {
 
   if (state.status === "success") {
     return (
-      <div role="status" className="rounded-lg border border-black/10 p-6">
-        <h2 className="font-semibold">Merci, votre message est bien envoyé !</h2>
-        <p className="mt-2 opacity-80">
-          Vous allez recevoir un e-mail de confirmation. Nous vous répondons très vite.
-        </p>
-      </div>
+      <FormSuccess title="Merci, votre message est bien envoyé !">
+        Vous allez recevoir un e-mail de confirmation. Nous vous répondons très vite.
+      </FormSuccess>
     );
   }
 
@@ -24,9 +21,9 @@ export function ContactForm() {
   const values = state.status === "error" ? state.values : {};
 
   return (
-    <form action={formAction} noValidate className="relative grid gap-5 sm:grid-cols-2">
+    <form action={formAction} noValidate className="relative grid gap-6 sm:grid-cols-2">
       {state.status === "error" && (
-        <p role="alert" className="text-sm text-red-600 sm:col-span-2">
+        <p role="alert" className="text-lg font-semibold text-red-700 sm:col-span-2">
           Merci de corriger les champs indiqués.
         </p>
       )}

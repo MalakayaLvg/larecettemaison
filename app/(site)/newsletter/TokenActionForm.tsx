@@ -1,6 +1,7 @@
 "use client";
 
 import { useActionState } from "react";
+import { darkButtonClassName } from "@/components/home/Section";
 import type { TokenStatus } from "@/lib/newsletter";
 
 // One-button form for the links sent by email: the action only runs on an explicit click,
@@ -22,7 +23,7 @@ export function TokenActionForm({
 
   if (result && result !== "valid") {
     return (
-      <p role="status" className="max-w-2xl">
+      <p role="status" className="max-w-2xl text-lg leading-[1.2] lg:text-[22px]">
         {messages[result]}
       </p>
     );
@@ -30,13 +31,9 @@ export function TokenActionForm({
 
   return (
     <form action={formAction}>
-      <p className="mb-6">{intro}</p>
+      <p className="mb-8 text-lg leading-[1.2] lg:text-[22px]">{intro}</p>
       <input type="hidden" name="token" value={token} />
-      <button
-        type="submit"
-        disabled={pending}
-        className="rounded-full bg-foreground px-5 py-2.5 text-sm text-background hover:opacity-90 disabled:opacity-50"
-      >
+      <button type="submit" disabled={pending} className={`${darkButtonClassName} disabled:opacity-50`}>
         {pending ? "Un instant…" : label}
       </button>
     </form>

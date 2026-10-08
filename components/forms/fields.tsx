@@ -1,7 +1,9 @@
+import { buttonClassName } from "@/components/home/Section";
 import { HONEYPOT_FIELD } from "@/lib/forms";
 
-const controlClassName =
-  "w-full rounded-md border border-black/15 bg-transparent px-3 py-2 focus:border-foreground focus:outline-none aria-invalid:border-red-600";
+// Figma "input" (Contact / Devis V4, node 309:799): white, 2px navy border, 16px radius.
+export const controlClassName =
+  "w-full rounded-2xl border-2 border-ink bg-white px-6 py-3.5 text-lg text-ink focus:outline-none focus-visible:ring-2 focus-visible:ring-accent aria-invalid:border-red-600";
 
 type FieldProps = {
   name: string;
@@ -25,18 +27,18 @@ function Field({
   const describedBy = [hint && `${name}-hint`, error && `${name}-error`].filter(Boolean).join(" ") || undefined;
   return (
     <div className={className}>
-      <label htmlFor={name} className="mb-1 block text-sm font-medium">
+      <label htmlFor={name} className="mb-2 block text-lg leading-[1.4] font-semibold">
         {label}
-        {required ? " *" : <span className="font-normal opacity-60"> (facultatif)</span>}
+        {required ? " *" : " (facultatif)"}
       </label>
       {children(describedBy)}
       {hint && (
-        <p id={`${name}-hint`} className="mt-1 text-xs opacity-60">
+        <p id={`${name}-hint`} className="mt-1 text-[15px] leading-[1.45] text-ink-soft">
           {hint}
         </p>
       )}
       {error && (
-        <p id={`${name}-error`} className="mt-1 text-sm text-red-600">
+        <p id={`${name}-error`} className="mt-1 text-[15px] font-semibold text-red-700">
           {error}
         </p>
       )}
@@ -62,7 +64,7 @@ export function TextField({
           autoComplete={autoComplete}
           aria-invalid={props.error ? true : undefined}
           aria-describedby={describedBy}
-          className={controlClassName}
+          className={`${controlClassName} h-14`}
         />
       )}
     </Field>
@@ -78,7 +80,7 @@ export function TextAreaField({ defaultValue, ...props }: FieldProps & { default
           name={props.name}
           required={props.required}
           defaultValue={defaultValue}
-          rows={5}
+          rows={4}
           aria-invalid={props.error ? true : undefined}
           aria-describedby={describedBy}
           className={controlClassName}
@@ -103,7 +105,7 @@ export function SelectField({
           defaultValue={defaultValue ?? ""}
           aria-invalid={props.error ? true : undefined}
           aria-describedby={describedBy}
-          className={controlClassName}
+          className={`${controlClassName} h-14 py-0`}
         >
           {children}
         </select>
@@ -122,14 +124,29 @@ export function HoneypotField() {
   );
 }
 
-export function SubmitButton({ pending, children }: { pending: boolean; children: React.ReactNode }) {
+// Message shown in place of a form once it has been sent.
+export function FormSuccess({ title, children }: { title: string; children: React.ReactNode }) {
   return (
-    <button
-      type="submit"
-      disabled={pending}
-      className="rounded-full bg-foreground px-6 py-2.5 text-sm text-background hover:opacity-90 disabled:opacity-50"
-    >
-      {pending ? "Envoi…" : children}
+    <div role="status" className="border-2 border-ink bg-brand-subtle p-6 lg:p-8">
+      <h2 className="font-display text-2xl leading-[1.25] font-bold">{title}</h2>
+      <p className="mt-2 text-lg leading-[1.55]">{children}</p>
+    </div>
+  );
+}
+
+// Figma "La Recette/Button", primary (orange) version.
+export function SubmitButton({
+  pending,
+  pendingLabel = "Envoi…",
+  children,
+}: {
+  pending: boolean;
+  pendingLabel?: string;
+  children: React.ReactNode;
+}) {
+  return (
+    <button type="submit" disabled={pending} className={`${buttonClassName} disabled:opacity-50`}>
+      {pending ? pendingLabel : children}
     </button>
   );
 }

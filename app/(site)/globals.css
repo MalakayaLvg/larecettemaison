@@ -17,9 +17,15 @@
   --color-brand-dark: #24533d; /* Text/Brand */
   --color-accent: #cfd600; /* Background/Accent (lime) */
   --color-accent-subtle: #f4f6c2;
+  --color-accent-tint: #f0f2b0; /* Background/Accent tint (Studio page) */
+  --color-accent-wash: #f8f9d9; /* Background/Accent wash */
+  --color-accent-dark: #7c8000; /* Décor/Jaune foncé 600 (step numbers) */
   --color-primary: #b8450c; /* Action/Primary */
   --color-highlight: #e65d16; /* Background/Highlight */
   --color-highlight-subtle: #fce3d3;
+  --color-highlight-tint: #f8ceb9; /* Background/Highlight tint (Expériences page) */
+  --color-highlight-wash: #fdf1ea; /* Background/Highlight wash */
+  --color-highlight-dark: #b84a12; /* Décor/Orange foncé 500 (pillar numbers) */
 
   /* Body: Nunito. Headings: Alegreya Sans. Poster titles and figures: Montserrat Black.
      The fonts are declared in app/(site)/layout.tsx. */

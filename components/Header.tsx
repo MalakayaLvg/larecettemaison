@@ -1,14 +1,20 @@
 import Image from "next/image";
 import Link from "next/link";
 import { MobileMenu } from "@/components/MobileMenu";
-import { accentButtonClassName, buttonClassName, containerClassName } from "@/components/home/Section";
+import {
+  accentOnNavyButtonClassName,
+  buttonClassName,
+  containerClassName,
+  primaryOnNavyButtonClassName,
+} from "@/components/home/Section";
 import { mainNav, siteName } from "@/lib/site";
 
-// Figma "01 — Header" (V4, node 186:107): navy bar, white logo.
+// Figma "01 — Header" (V4, node 186:107): navy bar (104px high), white logo, buttons with the
+// green cut-out shadow.
 export function Header() {
   return (
     <header className="bg-ink text-white">
-      <div className={`${containerClassName} flex items-center justify-between gap-6 py-4 lg:py-6`}>
+      <div className={`${containerClassName} flex items-center justify-between gap-6 py-4`}>
         <Link href="/" className="shrink-0">
           <Image src="/brand/logo-blanc.svg" alt={siteName} width={89} height={72} priority className="h-14 w-auto lg:h-[72px]" />
         </Link>
@@ -26,10 +32,10 @@ export function Header() {
         </nav>
 
         <div className="flex items-center gap-3">
-          <Link href="/podcast" className={`${accentButtonClassName} max-2xl:hidden`}>
+          <Link href="/podcast" className={`${accentOnNavyButtonClassName} max-2xl:hidden`}>
             Écouter le podcast
           </Link>
-          <Link href="/devis" className={`${buttonClassName} max-sm:hidden`}>
+          <Link href="/devis" className={`${primaryOnNavyButtonClassName} max-sm:hidden`}>
             Demander un devis
           </Link>
 

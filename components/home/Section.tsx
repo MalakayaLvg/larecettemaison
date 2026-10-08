@@ -56,8 +56,13 @@ export const cardClassName = "flex flex-col overflow-hidden rounded-lg border bo
 // Pill button (Figma "La Recette/Button"): navy border, small cut-out shadow and an arrow drawn
 // after the label (public/icons/fleche.svg used as a mask, so it takes the text colour).
 // Primary = main action, outline = secondary action on a light or green background.
-const pillClassName =
-  "inline-flex h-14 items-center justify-center gap-2 rounded-full border-2 border-ink px-8 text-lg leading-[1.2] font-bold whitespace-nowrap shadow-cut-sm transition-colors after:size-4 after:shrink-0 after:bg-current after:content-[''] after:[mask:url(/icons/fleche.svg)_center/contain_no-repeat]";
+const pillBaseClassName =
+  "inline-flex h-14 items-center justify-center gap-2 rounded-full border-2 border-ink px-8 text-lg leading-[1.2] font-bold whitespace-nowrap transition-colors after:size-4 after:shrink-0 after:bg-current after:content-[''] after:[mask:url(/icons/fleche.svg)_center/contain_no-repeat]";
+
+const pillClassName = `${pillBaseClassName} shadow-cut-sm`;
+
+// "Ombre découpée — petite sur marine": green shadow, for buttons on the navy header and footer.
+const pillOnNavyClassName = `${pillBaseClassName} shadow-cut-sm-brand`;
 
 export const buttonClassName = `${pillClassName} bg-primary text-white hover:bg-ink`;
 
@@ -69,15 +74,34 @@ export const darkButtonClassName = `${pillClassName} bg-ink text-white hover:bg-
 
 export const outlineButtonClassName = `${pillClassName} text-ink hover:bg-ink hover:text-white`;
 
+// Lime and orange buttons of the navy header and footer (Figma "01 — Header", "11 — Footer").
+export const accentOnNavyButtonClassName = `${pillOnNavyClassName} bg-accent text-ink hover:bg-white`;
+
+export const primaryOnNavyButtonClassName = `${pillOnNavyClassName} bg-primary text-white hover:bg-white hover:text-ink`;
+
 // Full-width page container (1760px content at 1920px, 80px side padding on desktop).
 export const containerClassName = "mx-auto w-full max-w-[1920px] px-4 sm:px-10 xl:px-20";
 
 export const ghostButtonClassName = "inline-flex items-center justify-center py-3 font-medium opacity-70 hover:opacity-100 hover:underline";
 
-// Figma "Sticker eyebrow": small tilted lime label.
-export function Sticker({ children }: { children: React.ReactNode }) {
+const stickerTones = {
+  accent: "bg-accent text-ink",
+  primary: "bg-primary text-white",
+  ink: "bg-ink text-white",
+};
+
+// Figma "Sticker eyebrow": small tilted label, lime by default (orange or navy on some pages).
+export function Sticker({
+  children,
+  tone = "accent",
+}: {
+  children: React.ReactNode;
+  tone?: "accent" | "primary" | "ink";
+}) {
   return (
-    <p className={`${eyebrowClassName} inline-block rotate-2 rounded-[4px] border-2 border-ink bg-accent px-3.5 py-1.5 font-bold text-ink`}>
+    <p
+      className={`${eyebrowClassName} inline-block rotate-2 rounded-[4px] border-2 border-ink px-3.5 py-1.5 font-bold ${stickerTones[tone]}`}
+    >
       {children}
     </p>
   );
@@ -92,6 +116,8 @@ export function SectionHeading({
   onDark = false,
   center = false,
   underline = true,
+  underlineClassName,
+  sticker,
   className = "",
 }: {
   eyebrow: string;
@@ -103,6 +129,9 @@ export function SectionHeading({
   onDark?: boolean;
   center?: boolean;
   underline?: boolean;
+  /** Colour of the "Souligné" mark, when it differs from the default (green, lime on dark). */
+  underlineClassName?: string;
+  sticker?: "accent" | "primary" | "ink";
   className?: string;
 }) {
   const titleClassName = poster
@@ -112,13 +141,13 @@ export function SectionHeading({
     : h2ClassName;
   return (
     <div className={`flex flex-col gap-4 ${center ? "items-center text-center" : "items-start"} ${className}`}>
-      <Sticker>{eyebrow}</Sticker>
+      <Sticker tone={sticker}>{eyebrow}</Sticker>
       <div className="relative">
         <h2 className={`${titleClassName} relative`}>{title}</h2>
         {underline && (
           <span
             aria-hidden
-            className={`absolute -bottom-[18px] -left-1.5 h-3.5 w-[180px] rotate-[1.5deg] rounded-[7px] ${onDark ? "bg-accent" : "bg-brand"}`}
+            className={`absolute -bottom-[18px] -left-1.5 h-3.5 w-[180px] rotate-[1.5deg] rounded-[7px] ${underlineClassName ?? (onDark ? "bg-accent" : "bg-brand")}`}
           />
         )}
       </div>
@@ -131,7 +160,7 @@ export function SectionHeading({
 export function SlopeCut({
   color,
 }: {
-  color: "blanc" | "blanc-basse" | "vert" | "vert-clair" | "marine";
+  color: "blanc" | "blanc-basse" | "vert" | "vert-clair" | "marine" | "jaune" | "jaune-clair" | "jaune-pale" | "orange" | "orange-clair" | "orange-pale";
 }) {
   return (
     <Image
