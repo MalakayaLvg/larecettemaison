@@ -103,28 +103,15 @@ export const Experiences: CollectionConfig = {
       ],
     },
     {
-      name: "lumaUrl",
-      label: "Lien de réservation Luma",
-      type: "text",
+      name: "bookingPrice",
+      label: "Prix réservation en ligne (€ / pers.)",
+      type: "number",
+      min: 1,
       admin: {
         position: "sidebar",
-        description: "Adresse de l'événement sur Luma (https://lu.ma/…). Laisser vide si pas de réservation en ligne.",
-      },
-      validate: (value: string | null | undefined) =>
-        !value || /^https:\/\/(lu\.ma|luma\.com)\//.test(value) || "Doit être un lien https://lu.ma/… ou https://luma.com/…",
-    },
-    {
-      name: "lumaEventId",
-      label: "Identifiant de l'événement Luma",
-      type: "text",
-      admin: {
-        position: "sidebar",
-        placeholder: "evt-…",
         description:
-          "Ouvre la réservation dans une fenêtre sur le site au lieu d'envoyer vers Luma. À trouver sur Luma : Gérer l'événement → Plus → Intégrer.",
+          "Active la réservation et le paiement en ligne (Stripe). Les dates se gèrent dans « Sessions ». Laisser vide si pas de réservation en ligne.",
       },
-      validate: (value: string | null | undefined) =>
-        !value || /^evt-[A-Za-z0-9]+$/.test(value) || "Doit commencer par « evt- »",
     },
     {
       name: "onQuote",

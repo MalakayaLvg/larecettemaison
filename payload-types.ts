@@ -70,6 +70,8 @@ export interface Config {
     episodes: Episode;
     articles: Article;
     experiences: Experience;
+    sessions: Session;
+    bookings: Booking;
     'studio-offers': StudioOffer;
     testimonials: Testimonial;
     'quote-requests': QuoteRequest;
@@ -87,6 +89,8 @@ export interface Config {
     episodes: EpisodesSelect<false> | EpisodesSelect<true>;
     articles: ArticlesSelect<false> | ArticlesSelect<true>;
     experiences: ExperiencesSelect<false> | ExperiencesSelect<true>;
+    sessions: SessionsSelect<false> | SessionsSelect<true>;
+    bookings: BookingsSelect<false> | BookingsSelect<true>;
     'studio-offers': StudioOffersSelect<false> | StudioOffersSelect<true>;
     testimonials: TestimonialsSelect<false> | TestimonialsSelect<true>;
     'quote-requests': QuoteRequestsSelect<false> | QuoteRequestsSelect<true>;
@@ -336,13 +340,9 @@ export interface Experience {
     photo?: (number | null) | Media;
   };
   /**
-   * Adresse de l'événement sur Luma (https://lu.ma/…). Laisser vide si pas de réservation en ligne.
+   * Active la réservation et le paiement en ligne (Stripe). Les dates se gèrent dans « Sessions ». Laisser vide si pas de réservation en ligne.
    */
-  lumaUrl?: string | null;
-  /**
-   * Ouvre la réservation dans une fenêtre sur le site au lieu d'envoyer vers Luma. À trouver sur Luma : Gérer l'événement → Plus → Intégrer.
-   */
-  lumaEventId?: string | null;
+  bookingPrice?: number | null;
   /**
    * Affiche un lien vers la demande de devis (groupes, entreprises).
    */
@@ -351,6 +351,46 @@ export interface Experience {
    * Partie de l'adresse de la page. Laisser vide pour la générer depuis le titre.
    */
   slug: string;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * Les places restantes = capacité − réservations payées (ou en cours de paiement).
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "sessions".
+ */
+export interface Session {
+  id: number;
+  experience: number | Experience;
+  startsAt: string;
+  capacity: number;
+  label?: string | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "bookings".
+ */
+export interface Booking {
+  id: number;
+  experience: number | Experience;
+  session: number | Session;
+  name: string;
+  email: string;
+  phone: string;
+  seats: number;
+  /**
+   * Après code promo éventuel.
+   */
+  amount?: number | null;
+  /**
+   * « Annulée » libère les places. Le remboursement se fait dans le tableau de bord Stripe.
+   */
+  status: 'en-attente' | 'payee' | 'expiree' | 'annulee';
+  stripeSessionId?: string | null;
+  stripePaymentIntentId?: string | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -494,6 +534,14 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'experiences';
         value: number | Experience;
+      } | null)
+    | ({
+        relationTo: 'sessions';
+        value: number | Session;
+      } | null)
+    | ({
+        relationTo: 'bookings';
+        value: number | Booking;
       } | null)
     | ({
         relationTo: 'studio-offers';
@@ -657,10 +705,39 @@ export interface ExperiencesSelect<T extends boolean = true> {
         bio?: T;
         photo?: T;
       };
-  lumaUrl?: T;
-  lumaEventId?: T;
+  bookingPrice?: T;
   onQuote?: T;
   slug?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "sessions_select".
+ */
+export interface SessionsSelect<T extends boolean = true> {
+  experience?: T;
+  startsAt?: T;
+  capacity?: T;
+  label?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "bookings_select".
+ */
+export interface BookingsSelect<T extends boolean = true> {
+  experience?: T;
+  session?: T;
+  name?: T;
+  email?: T;
+  phone?: T;
+  seats?: T;
+  amount?: T;
+  status?: T;
+  stripeSessionId?: T;
+  stripePaymentIntentId?: T;
   updatedAt?: T;
   createdAt?: T;
 }

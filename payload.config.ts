@@ -8,11 +8,13 @@ import { buildConfig } from "payload";
 import sharp from "sharp";
 import { fileURLToPath } from "url";
 import { Articles } from "./collections/Articles";
+import { Bookings } from "./collections/Bookings";
 import { ContactMessages } from "./collections/ContactMessages";
 import { Episodes } from "./collections/Episodes";
 import { Experiences } from "./collections/Experiences";
 import { Media } from "./collections/Media";
 import { QuoteRequests } from "./collections/QuoteRequests";
+import { Sessions } from "./collections/Sessions";
 import { StudioOffers } from "./collections/StudioOffers";
 import { Subscribers } from "./collections/Subscribers";
 import { Testimonials } from "./collections/Testimonials";
@@ -31,6 +33,8 @@ export default buildConfig({
     Episodes,
     Articles,
     Experiences,
+    Sessions,
+    Bookings,
     StudioOffers,
     Testimonials,
     QuoteRequests,

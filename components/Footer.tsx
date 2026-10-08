@@ -40,7 +40,8 @@ export function Footer() {
             </ul>
           </nav>
 
-          <div className="space-y-4 md:col-span-2 lg:col-span-1">
+          {/* Target of the "Me prévenir" links on full booking sessions. */}
+          <div id="newsletter" className="scroll-mt-24 space-y-4 md:col-span-2 lg:col-span-1">
             <h2 className="text-2xl leading-[1.25] font-bold">Newsletter</h2>
             <p className="text-lg leading-[1.55]">
               Recevez les nouveaux épisodes du podcast, nos prochaines expériences à Lyon et nos articles.

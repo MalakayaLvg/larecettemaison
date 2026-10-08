@@ -13,8 +13,7 @@ import {
 } from "@/components/home/Section";
 import { Steps } from "@/components/home/Steps";
 import { TestimonialsSection } from "@/components/home/TestimonialsSection";
-import { LumaCheckoutButton } from "@/components/LumaCheckoutButton";
-import { getExperience, getOtherExperiences, populatedImages } from "@/lib/experiences";
+import { experienceHref, getExperience, getOtherExperiences, populatedImages } from "@/lib/experiences";
 import { proseClassName } from "@/lib/prose";
 import { experienceTypes, isExperienceType } from "@/lib/site";
 import { getTestimonials } from "@/lib/testimonials";
@@ -94,12 +93,12 @@ export default async function ExperiencePage(props: Props) {
               <p className="font-medium opacity-70">Où et quand ? {experience.availability}</p>
             )}
             {experience.price && <p className="text-lg font-bold">{experience.price}</p>}
-            {(experience.lumaUrl || experience.onQuote) && (
+            {(experience.bookingPrice || experience.onQuote) && (
               <div className="flex flex-wrap gap-3 pt-1">
-                {experience.lumaUrl && (
-                  <LumaCheckoutButton href={experience.lumaUrl} eventId={experience.lumaEventId} className={buttonClassName}>
+                {experience.bookingPrice && (
+                  <Link href={`${experienceHref(experience)}/reserver`} className={buttonClassName}>
                     Réserver ma place
-                  </LumaCheckoutButton>
+                  </Link>
                 )}
                 {experience.onQuote && (
                   <Link href={`/devis?experience=${experience.slug}`} className={ghostButtonClassName}>
