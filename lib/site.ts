@@ -1,16 +1,17 @@
 export const siteName = "Maison La Recette";
 
-// Order from the Figma home page header. No dedicated B2B page yet: "Entreprises" leads to the
-// quote form.
+// Order from the Figma home page header. No dedicated B2B page yet, so no "Entreprises" link.
 export const mainNav = [
   { href: "/podcast", label: "Podcast" },
   { href: "/studio", label: "Studio" },
   { href: "/experiences", label: "Expériences" },
-  { href: "/devis", label: "Entreprises" },
   { href: "/blog", label: "Blog" },
   { href: "/a-propos", label: "À propos" },
   { href: "/contact", label: "Contact / Devis" },
 ] as const;
+
+// In the header, contact is the orange "Contact / Demander un devis" button instead of a link.
+export const headerNav = mainNav.filter((item) => item.href !== "/contact");
 
 export const legalNav = [
   { href: "/mentions-legales", label: "Mentions légales" },

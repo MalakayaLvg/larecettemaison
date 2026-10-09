@@ -13,7 +13,16 @@ export async function getExperiencesByType(type: ExperienceType) {
     sort: "title",
     pagination: false,
     depth: 1,
-    select: { slug: true, type: true, title: true, duration: true, excerpt: true, images: true },
+    select: {
+      slug: true,
+      type: true,
+      title: true,
+      duration: true,
+      location: true,
+      price: true,
+      excerpt: true,
+      images: true,
+    },
   });
   return docs;
 }
@@ -47,7 +56,16 @@ export async function getOtherExperiences(type: ExperienceType, excludeSlug: str
     sort: "-updatedAt",
     limit,
     depth: 1,
-    select: { slug: true, type: true, title: true, duration: true, excerpt: true, images: true },
+    select: {
+      slug: true,
+      type: true,
+      title: true,
+      duration: true,
+      location: true,
+      price: true,
+      excerpt: true,
+      images: true,
+    },
   });
   return docs;
 }
