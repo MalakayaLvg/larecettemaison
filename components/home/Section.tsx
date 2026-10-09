@@ -56,8 +56,9 @@ export const cardClassName = "flex flex-col overflow-hidden rounded-lg border bo
 // Pill button (Figma "La Recette/Button"): navy border, small cut-out shadow and an arrow drawn
 // after the label (public/icons/fleche.svg used as a mask, so it takes the text colour).
 // Primary = main action, outline = secondary action on a light or green background.
+// On hover the button slides 4px into its own shadow, as if pressed (not when disabled).
 const pillBaseClassName =
-  "inline-flex h-14 items-center justify-center gap-2 rounded-full border-2 border-ink px-8 text-lg leading-[1.2] font-bold whitespace-nowrap transition-colors after:size-4 after:shrink-0 after:bg-current after:content-[''] after:[mask:url(/icons/fleche.svg)_center/contain_no-repeat]";
+  "inline-flex h-14 items-center justify-center gap-2 rounded-full border-2 border-ink px-8 text-lg leading-[1.2] font-bold whitespace-nowrap transition-[color,background-color,box-shadow,translate] duration-150 not-disabled:hover:translate-x-1 not-disabled:hover:translate-y-1 not-disabled:hover:shadow-none motion-reduce:transition-none after:size-4 after:shrink-0 after:bg-current after:content-[''] after:[mask:url(/icons/fleche.svg)_center/contain_no-repeat]";
 
 const pillClassName = `${pillBaseClassName} shadow-cut-sm`;
 
